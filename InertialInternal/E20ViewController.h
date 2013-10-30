@@ -13,6 +13,7 @@
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UITextField *textBox;
+@property (weak, nonatomic) IBOutlet UIView *movingView;
 
 - (IBAction)startButton:(id)sender;
 - (IBAction)stopButton:(id)sender;

@@ -26,7 +26,33 @@
          
          dispatch_async(dispatch_get_main_queue(),
                         ^{
-                            self.textBox.text = [NSString stringWithFormat:@"Accel started"];
+                            CGRect rect = self.movingView.frame;
+                            
+                            float movetoX = rect.origin.x + (data.acceleration.x * stepMoveFactor);
+                            float maxX = self.view.frame.size.width - rect.size.width;
+                            
+                            float movetoY = (rect.origin.y + rect.size.height)
+                            - (data.acceleration.y * stepMoveFactor);
+                            
+                            float maxY = self.view.frame.size.height;
+                            
+                            if ( movetoX > 0 && movetoX < maxX ) {
+                                rect.origin.x += (data.acceleration.x * stepMoveFactor);
+                            };
+                            
+                            if ( movetoY > 0 && movetoY < maxY ) {
+                                rect.origin.y -= (data.acceleration.y * stepMoveFactor);
+                            };
+                            
+                            [UIView animateWithDuration:0 delay:0
+                                                options:UIViewAnimationCurveEaseInOut
+                                             animations:
+                             ^{
+                                 self.movingView.frame = rect;
+                             }
+                                             completion:nil
+                             ];
+
                             
                         }
                         );

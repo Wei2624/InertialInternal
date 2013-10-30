@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9B43774F18208CBB00D50E0B /* E20QuartzView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B43774E18208CBB00D50E0B /* E20QuartzView.m */; };
 		9BB99D6B182063930061D126 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BB99D6A182063930061D126 /* Foundation.framework */; };
 		9BB99D6D182063930061D126 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BB99D6C182063930061D126 /* CoreGraphics.framework */; };
 		9BB99D6F182063930061D126 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BB99D6E182063930061D126 /* UIKit.framework */; };
@@ -38,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9B43774D18208CBB00D50E0B /* E20QuartzView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20QuartzView.h; sourceTree = "<group>"; };
+		9B43774E18208CBB00D50E0B /* E20QuartzView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20QuartzView.m; sourceTree = "<group>"; };
 		9BB99D67182063930061D126 /* InertialInternal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InertialInternal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BB99D6A182063930061D126 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9BB99D6C182063930061D126 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -168,8 +171,10 @@
 			children = (
 				9BB99DA2182064820061D126 /* E20ContentViewController.m */,
 				9BB99DA1182064820061D126 /* E20ContentViewController.h */,
-				9BB99D80182063930061D126 /* E20ViewController.m */,
 				9BB99D7F182063930061D126 /* E20ViewController.h */,
+				9BB99D80182063930061D126 /* E20ViewController.m */,
+				9B43774D18208CBB00D50E0B /* E20QuartzView.h */,
+				9B43774E18208CBB00D50E0B /* E20QuartzView.m */,
 				9BB99DA5182065650061D126 /* E20ContentItem.m */,
 				9BB99DA4182065650061D126 /* E20ContentItem.h */,
 				9BB99D7C182063930061D126 /* Main.storyboard */,
@@ -278,6 +283,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9BB99D81182063930061D126 /* E20ViewController.m in Sources */,
+				9B43774F18208CBB00D50E0B /* E20QuartzView.m in Sources */,
 				9BB99D7B182063930061D126 /* E20AppDelegate.m in Sources */,
 				9BB99DAA182075490061D126 /* E20RecordViewScrollSubClass.m in Sources */,
 				9BB99DA3182064820061D126 /* E20ContentViewController.m in Sources */,
