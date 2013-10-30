@@ -79,6 +79,9 @@
                                         <state key="normal" title="Start Recording">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="startButton:" destination="mAv-Oc-jfa" eventType="touchUpInside" id="gkk-41-VYl"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8MO-eh-eMW">
                                         <rect key="frame" x="192" y="20" width="108" height="30"/>
@@ -86,6 +89,9 @@
                                         <state key="normal" title="Stop Recording">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="stopButton:" destination="mAv-Oc-jfa" eventType="touchUpInside" id="Ck0-gG-g7D"/>
+                                        </connections>
                                     </button>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RiB-TD-DTG">
                                         <rect key="frame" x="20" y="84" width="280" height="30"/>
@@ -106,6 +112,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="pPD-uU-9RN"/>
+                    <connections>
+                        <outlet property="textBox" destination="RiB-TD-DTG" id="GF6-3m-7JO"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VVa-of-XDM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

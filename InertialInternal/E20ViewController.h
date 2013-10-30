@@ -12,6 +12,9 @@
 @interface E20ViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UITextField *textBox;
 
+- (IBAction)startButton:(id)sender;
+- (IBAction)stopButton:(id)sender;
 
 @end
