@@ -14,10 +14,15 @@
 
 @implementation E20ViewController
 
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    [self.scrollView setScrollEnabled:YES];
+    [self.scrollView setContentSize:(CGSizeMake(800, 800))];
+
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -25,5 +30,19 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (CMMotionManager *)motionManager
+{
+    CMMotionManager *motionManager = nil;
+    
+    id appDelegate = [UIApplication sharedApplication].delegate;
+    
+    if ([appDelegate respondsToSelector:@selector(motionManager)]) {
+        motionManager = [appDelegate motionManager];
+    }
+    
+    return motionManager;
+}
+
 
 @end

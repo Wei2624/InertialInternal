@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreMotion/CoreMotion.h>
 
 @interface E20ViewController : UIViewController
+
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+
 
 @end

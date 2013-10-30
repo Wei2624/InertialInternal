@@ -21,6 +21,10 @@
 		9BB99D8C182063930061D126 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BB99D6E182063930061D126 /* UIKit.framework */; };
 		9BB99D94182063930061D126 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9BB99D92182063930061D126 /* InfoPlist.strings */; };
 		9BB99D96182063930061D126 /* InertialInternalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB99D95182063930061D126 /* InertialInternalTests.m */; };
+		9BB99DA0182063A50061D126 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BB99D9F182063A50061D126 /* CoreMotion.framework */; };
+		9BB99DA3182064820061D126 /* E20ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB99DA2182064820061D126 /* E20ContentViewController.m */; };
+		9BB99DA6182065650061D126 /* E20ContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB99DA5182065650061D126 /* E20ContentItem.m */; };
+		9BB99DAA182075490061D126 /* E20RecordViewScrollSubClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB99DA9182075490061D126 /* E20RecordViewScrollSubClass.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,14 +49,21 @@
 		9BB99D79182063930061D126 /* E20AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = E20AppDelegate.h; sourceTree = "<group>"; };
 		9BB99D7A182063930061D126 /* E20AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = E20AppDelegate.m; sourceTree = "<group>"; };
 		9BB99D7D182063930061D126 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		9BB99D7F182063930061D126 /* E20ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = E20ViewController.h; sourceTree = "<group>"; };
-		9BB99D80182063930061D126 /* E20ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = E20ViewController.m; sourceTree = "<group>"; };
+		9BB99D7F182063930061D126 /* E20ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = E20ViewController.h; path = InertialInternal/E20ViewController.h; sourceTree = "<group>"; };
+		9BB99D80182063930061D126 /* E20ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = E20ViewController.m; path = InertialInternal/E20ViewController.m; sourceTree = "<group>"; };
 		9BB99D82182063930061D126 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9BB99D88182063930061D126 /* InertialInternalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InertialInternalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BB99D89182063930061D126 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		9BB99D91182063930061D126 /* InertialInternalTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "InertialInternalTests-Info.plist"; sourceTree = "<group>"; };
 		9BB99D93182063930061D126 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9BB99D95182063930061D126 /* InertialInternalTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InertialInternalTests.m; sourceTree = "<group>"; };
+		9BB99D9F182063A50061D126 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		9BB99DA1182064820061D126 /* E20ContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = E20ContentViewController.h; path = InertialInternal/E20ContentViewController.h; sourceTree = "<group>"; };
+		9BB99DA2182064820061D126 /* E20ContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = E20ContentViewController.m; path = InertialInternal/E20ContentViewController.m; sourceTree = "<group>"; };
+		9BB99DA4182065650061D126 /* E20ContentItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = E20ContentItem.h; path = InertialInternal/E20ContentItem.h; sourceTree = "<group>"; };
+		9BB99DA5182065650061D126 /* E20ContentItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = E20ContentItem.m; path = InertialInternal/E20ContentItem.m; sourceTree = "<group>"; };
+		9BB99DA8182075490061D126 /* E20RecordViewScrollSubClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20RecordViewScrollSubClass.h; sourceTree = "<group>"; };
+		9BB99DA9182075490061D126 /* E20RecordViewScrollSubClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20RecordViewScrollSubClass.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9BB99DA0182063A50061D126 /* CoreMotion.framework in Frameworks */,
 				9BB99D6D182063930061D126 /* CoreGraphics.framework in Frameworks */,
 				9BB99D6F182063930061D126 /* UIKit.framework in Frameworks */,
 				9BB99D6B182063930061D126 /* Foundation.framework in Frameworks */,
@@ -82,6 +94,7 @@
 		9BB99D5E182063930061D126 = {
 			isa = PBXGroup;
 			children = (
+				9BB99DA7182074F80061D126 /* StoryBoard */,
 				9BB99D70182063930061D126 /* InertialInternal */,
 				9BB99D8F182063930061D126 /* InertialInternalTests */,
 				9BB99D69182063930061D126 /* Frameworks */,
@@ -101,6 +114,7 @@
 		9BB99D69182063930061D126 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9BB99D9F182063A50061D126 /* CoreMotion.framework */,
 				9BB99D6A182063930061D126 /* Foundation.framework */,
 				9BB99D6C182063930061D126 /* CoreGraphics.framework */,
 				9BB99D6E182063930061D126 /* UIKit.framework */,
@@ -114,9 +128,6 @@
 			children = (
 				9BB99D79182063930061D126 /* E20AppDelegate.h */,
 				9BB99D7A182063930061D126 /* E20AppDelegate.m */,
-				9BB99D7C182063930061D126 /* Main.storyboard */,
-				9BB99D7F182063930061D126 /* E20ViewController.h */,
-				9BB99D80182063930061D126 /* E20ViewController.m */,
 				9BB99D82182063930061D126 /* Images.xcassets */,
 				9BB99D71182063930061D126 /* Supporting Files */,
 			);
@@ -150,6 +161,22 @@
 				9BB99D92182063930061D126 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9BB99DA7182074F80061D126 /* StoryBoard */ = {
+			isa = PBXGroup;
+			children = (
+				9BB99DA2182064820061D126 /* E20ContentViewController.m */,
+				9BB99DA1182064820061D126 /* E20ContentViewController.h */,
+				9BB99D80182063930061D126 /* E20ViewController.m */,
+				9BB99D7F182063930061D126 /* E20ViewController.h */,
+				9BB99DA5182065650061D126 /* E20ContentItem.m */,
+				9BB99DA4182065650061D126 /* E20ContentItem.h */,
+				9BB99D7C182063930061D126 /* Main.storyboard */,
+				9BB99DA8182075490061D126 /* E20RecordViewScrollSubClass.h */,
+				9BB99DA9182075490061D126 /* E20RecordViewScrollSubClass.m */,
+			);
+			name = StoryBoard;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -252,6 +279,9 @@
 			files = (
 				9BB99D81182063930061D126 /* E20ViewController.m in Sources */,
 				9BB99D7B182063930061D126 /* E20AppDelegate.m in Sources */,
+				9BB99DAA182075490061D126 /* E20RecordViewScrollSubClass.m in Sources */,
+				9BB99DA3182064820061D126 /* E20ContentViewController.m in Sources */,
+				9BB99DA6182065650061D126 /* E20ContentItem.m in Sources */,
 				9BB99D77182063930061D126 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -289,6 +319,7 @@
 				9BB99D7D182063930061D126 /* Base */,
 			);
 			name = Main.storyboard;
+			path = InertialInternal;
 			sourceTree = "<group>";
 		};
 		9BB99D92182063930061D126 /* InfoPlist.strings */ = {
@@ -379,6 +410,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "InertialInternal/InertialInternal-Prefix.pch";
 				INFOPLIST_FILE = "InertialInternal/InertialInternal-Info.plist";
@@ -392,6 +424,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "InertialInternal/InertialInternal-Prefix.pch";
 				INFOPLIST_FILE = "InertialInternal/InertialInternal-Info.plist";
@@ -461,6 +494,7 @@
 				9BB99D9B182063930061D126 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9BB99D9C182063930061D126 /* Build configuration list for PBXNativeTarget "InertialInternalTests" */ = {
 			isa = XCConfigurationList;
@@ -469,6 +503,7 @@
 				9BB99D9E182063930061D126 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

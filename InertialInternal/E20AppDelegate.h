@@ -7,8 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreMotion/CoreMotion.h>
 
-@interface E20AppDelegate : UIResponder <UIApplicationDelegate>
+
+@interface E20AppDelegate : UIResponder <UIApplicationDelegate>{
+
+        CMMotionManager *motionManager;
+    
+}
 
 @property (strong, nonatomic) UIWindow *window;
 
