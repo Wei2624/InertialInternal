@@ -57,23 +57,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KbC-2x-hEr">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kJw-Ke-72r" customClass="E20AccelGraphView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <subviews>
-                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LII-4f-eEY" customClass="E20RecordViewScrollSubClass">
-                                        <rect key="frame" x="0.0" y="0.0" width="500" height="500"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <subviews>
-                                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Be-Ng-U2X">
-                                                <rect key="frame" x="118" y="106" width="100" height="100"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" red="1" green="0.62709836399999996" blue="0.43914931190000001" alpha="1" colorSpace="calibratedRGB"/>
-                                            </view>
-                                        </subviews>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    </scrollView>
-                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A3C-TJ-RWn">
@@ -120,7 +106,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="pPD-uU-9RN"/>
                     <connections>
-                        <outlet property="movingView" destination="9Be-Ng-U2X" id="jK4-Sb-XuH"/>
+                        <outlet property="accelView" destination="kJw-Ke-72r" id="I3m-Bo-G3W"/>
                         <outlet property="textBox" destination="RiB-TD-DTG" id="GF6-3m-7JO"/>
                     </connections>
                 </viewController>

@@ -14,11 +14,13 @@
 
 @implementation E20ViewController
 
+@synthesize accelView;
+
 -(void)startMyMotionDetect
 {
     
-    __block float stepMoveFactor = 15;
-    self.motionManager.accelerometerUpdateInterval = 1/100.0f;
+    
+    self.motionManager.accelerometerUpdateInterval = 1/10.0f;
     [self.motionManager
      startAccelerometerUpdatesToQueue:[[NSOperationQueue alloc] init]
      withHandler:^(CMAccelerometerData *data, NSError *error)
@@ -26,34 +28,13 @@
          
          dispatch_async(dispatch_get_main_queue(),
                         ^{
-                            CGRect rect = self.movingView.frame;
-                            
-                            float movetoX = rect.origin.x + (data.acceleration.x * stepMoveFactor);
-                            float maxX = self.view.frame.size.width - rect.size.width;
-                            
-                            float movetoY = (rect.origin.y + rect.size.height)
-                            - (data.acceleration.y * stepMoveFactor);
-                            
-                            float maxY = self.view.frame.size.height;
-                            
-                            if ( movetoX > 0 && movetoX < maxX ) {
-                                rect.origin.x += (data.acceleration.x * stepMoveFactor);
-                            };
-                            
-                            if ( movetoY > 0 && movetoY < maxY ) {
-                                rect.origin.y -= (data.acceleration.y * stepMoveFactor);
-                            };
-                            
-                            [UIView animateWithDuration:0 delay:0
-                                                options:UIViewAnimationCurveEaseInOut
-                                             animations:
-                             ^{
-                                 self.movingView.frame = rect;
-                             }
-                                             completion:nil
-                             ];
-
-                            
+                            [accelView setCanDraw:YES];
+                            int value = [accelView.positionY intValue];
+                            //[myView setPositionY:[NSNumber numberWithInt:value + 10]];
+                            accelView.positionY = [NSNumber numberWithInt:value+10];
+                            [accelView setNeedsDisplay];
+                            NSTimeInterval timeInMiliseconds = [[NSDate date] timeIntervalSince1970];
+                            NSLog(@"Time: %f", timeInMiliseconds);
                         }
                         );
      }
@@ -67,6 +48,10 @@
     [super viewDidLoad];
     [self.scrollView setScrollEnabled:YES];
     [self.scrollView setContentSize:(CGSizeMake(500, 500))];
+    [accelView setCanDraw:NO];
+    [accelView setPositionY:[NSNumber numberWithInt:100]];
+
+
     
     
 }
@@ -94,10 +79,16 @@
 - (IBAction)startButton:(id)sender {
     self.textBox.text = [NSString stringWithFormat:@"Accel started"];
     [self startMyMotionDetect];
+//    [accelView setCanDraw:YES];
+//    int value = [accelView.positionY intValue];
+//    //[myView setPositionY:[NSNumber numberWithInt:value + 10]];
+//    accelView.positionY = [NSNumber numberWithInt:value+10];
+//    [accelView setNeedsDisplay];
     
 }
 
 - (IBAction)stopButton:(id)sender {
     [self.motionManager stopAccelerometerUpdates];
+    self.textBox.text = [NSString stringWithFormat:@"Accel stopped"];
 }
 @end
