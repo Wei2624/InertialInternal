@@ -11,7 +11,9 @@
 
 @interface E20AccelGraphView : UIView{}
 @property (nonatomic,assign) BOOL canDraw;
-@property (nonatomic,strong) NSNumber* positionY;
+@property (nonatomic,strong) NSMutableArray* gravHistory;
+@property (nonatomic,strong) NSMutableArray* accelHistory;
+@property (nonatomic,strong) NSMutableArray* gyroHistory;
 
 
 @end

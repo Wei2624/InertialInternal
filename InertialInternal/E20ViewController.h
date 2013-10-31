@@ -11,9 +11,8 @@
 #import "E20AccelGraphView.h"
 
 
-@interface E20ViewController : UIViewController{
-    //IBOutlet E20AccelGraphView *accelView;
-}
+@interface E20ViewController : UIViewController
+
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @property (weak, nonatomic) IBOutlet E20AccelGraphView *accelView;

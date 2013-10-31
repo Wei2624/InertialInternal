@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Hy5-yY-w3P">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="Hy5-yY-w3P">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3746"/>
     </dependencies>
@@ -49,24 +49,26 @@
         <scene sceneID="YXY-jP-PBh">
             <objects>
                 <viewController id="mAv-Oc-jfa" customClass="E20ViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="J3C-yk-G5Y"/>
-                        <viewControllerLayoutGuide type="bottom" id="Pf5-bk-LOm"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Jng-aZ-jE3">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kJw-Ke-72r" customClass="E20AccelGraphView">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" id="h69-ef-gKb" customClass="E20RecordViewScrollSubClass">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A3C-TJ-RWn">
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" id="kJw-Ke-72r" customClass="E20AccelGraphView">
+                                        <rect key="frame" x="0.0" y="0.0" width="500" height="500"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
+                                </subviews>
+                            </scrollView>
+                            <view contentMode="scaleToFill" id="A3C-TJ-RWn">
                                 <rect key="frame" x="0.0" y="300" width="320" height="268"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PWa-s0-OvW">
+                                    <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="PWa-s0-OvW">
                                         <rect key="frame" x="20" y="20" width="118" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Start Recording">
@@ -76,7 +78,7 @@
                                             <action selector="startButton:" destination="mAv-Oc-jfa" eventType="touchUpInside" id="gkk-41-VYl"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8MO-eh-eMW">
+                                    <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="8MO-eh-eMW">
                                         <rect key="frame" x="192" y="20" width="108" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Stop Recording">
@@ -86,7 +88,7 @@
                                             <action selector="stopButton:" destination="mAv-Oc-jfa" eventType="touchUpInside" id="Ck0-gG-g7D"/>
                                         </connections>
                                     </button>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RiB-TD-DTG">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="RiB-TD-DTG">
                                         <rect key="frame" x="20" y="84" width="280" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -94,12 +96,6 @@
                                     </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="RiB-TD-DTG" secondAttribute="trailing" constant="20" id="kxi-Kw-M7r"/>
-                                    <constraint firstItem="RiB-TD-DTG" firstAttribute="top" secondItem="A3C-TJ-RWn" secondAttribute="top" constant="84" id="mBO-Sb-EN0"/>
-                                    <constraint firstAttribute="bottom" secondItem="RiB-TD-DTG" secondAttribute="bottom" constant="154" id="qaV-O5-3Jf"/>
-                                    <constraint firstItem="RiB-TD-DTG" firstAttribute="leading" secondItem="A3C-TJ-RWn" secondAttribute="leading" constant="20" id="tzM-fa-Sig"/>
-                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -107,6 +103,7 @@
                     <navigationItem key="navigationItem" id="pPD-uU-9RN"/>
                     <connections>
                         <outlet property="accelView" destination="kJw-Ke-72r" id="I3m-Bo-G3W"/>
+                        <outlet property="scrollView" destination="h69-ef-gKb" id="FqR-oo-hno"/>
                         <outlet property="textBox" destination="RiB-TD-DTG" id="GF6-3m-7JO"/>
                     </connections>
                 </viewController>

@@ -20,18 +20,21 @@
 {
     
     
-    self.motionManager.accelerometerUpdateInterval = 1/10.0f;
+
+    self.motionManager.deviceMotionUpdateInterval = 1/100.0f;
     [self.motionManager
-     startAccelerometerUpdatesToQueue:[[NSOperationQueue alloc] init]
-     withHandler:^(CMAccelerometerData *data, NSError *error)
+     startDeviceMotionUpdatesToQueue:[[NSOperationQueue alloc] init]
+     withHandler:^(CMDeviceMotion *data, NSError *error)
      {
          
          dispatch_async(dispatch_get_main_queue(),
                         ^{
                             [accelView setCanDraw:YES];
-                            int value = [accelView.positionY intValue];
-                            //[myView setPositionY:[NSNumber numberWithInt:value + 10]];
-                            accelView.positionY = [NSNumber numberWithInt:value+10];
+                            [accelView.gravHistory addObject:data];
+                            if ([accelView.gravHistory count]>400)
+                            {
+                                [accelView.gravHistory removeObjectAtIndex:0];
+                            }
                             [accelView setNeedsDisplay];
                             NSTimeInterval timeInMiliseconds = [[NSDate date] timeIntervalSince1970];
                             NSLog(@"Time: %f", timeInMiliseconds);
@@ -49,9 +52,8 @@
     [self.scrollView setScrollEnabled:YES];
     [self.scrollView setContentSize:(CGSizeMake(500, 500))];
     [accelView setCanDraw:NO];
-    [accelView setPositionY:[NSNumber numberWithInt:100]];
-
-
+    [accelView setGravHistory:[[NSMutableArray alloc] init]];
+    
     
     
 }
@@ -88,7 +90,7 @@
 }
 
 - (IBAction)stopButton:(id)sender {
-    [self.motionManager stopAccelerometerUpdates];
+    [self.motionManager startDeviceMotionUpdates];
     self.textBox.text = [NSString stringWithFormat:@"Accel stopped"];
 }
 @end
