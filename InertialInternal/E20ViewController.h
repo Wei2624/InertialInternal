@@ -11,7 +11,9 @@
 #import "E20AccelGraphView.h"
 
 
-@interface E20ViewController : UIViewController
+@interface E20ViewController : UIViewController{
+    
+}
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
@@ -19,7 +21,7 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *textBox;
 
-
+extern const int numInertialValuesStored;
 
 
 - (IBAction)startButton:(id)sender;

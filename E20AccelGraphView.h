@@ -14,6 +14,8 @@
 @property (nonatomic,strong) NSMutableArray* gravHistory;
 @property (nonatomic,strong) NSMutableArray* accelHistory;
 @property (nonatomic,strong) NSMutableArray* gyroHistory;
+@property (nonatomic,strong) NSMutableString* csvOutput;
+
 
 
 @end
