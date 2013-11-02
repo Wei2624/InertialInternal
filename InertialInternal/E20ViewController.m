@@ -23,9 +23,8 @@ const int numInertialValuesStored = 300;
 {
     
     
-    NSOperationQueue *nsqueue = [[NSOperationQueue alloc] init];
-    [nsqueue setMaxConcurrentOperationCount:5];
-    self.motionManager.deviceMotionUpdateInterval = 1/110.0f;
+    
+    self.motionManager.deviceMotionUpdateInterval = 1/150.0f;
     [self.motionManager
      startDeviceMotionUpdatesToQueue:[[NSOperationQueue alloc] init]
      withHandler:^(CMDeviceMotion *data, NSError *error)
@@ -40,25 +39,25 @@ const int numInertialValuesStored = 300;
                                 [accelView.gravHistory removeObjectAtIndex:0];
                             }
                             [accelView setNeedsDisplay];
-                            NSTimeInterval timeInMiliseconds = [[NSDate date] timeIntervalSince1970];
+                            //NSTimeInterval timeInMiliseconds = [[NSDate date] timeIntervalSince1970];
+                            NSTimeInterval timeInMiliseconds = data.timestamp;
                             NSLog(@"Time: %f", timeInMiliseconds);
-                            CMDeviceMotion *lastGrav = [accelView.gravHistory objectAtIndex:[accelView.gravHistory count]-1];
-                            CMAccelerometerData *lastAccel = [accelView.accelHistory objectAtIndex:[accelView.accelHistory count]-1];
-                            CMGyroData *lastGyro = [accelView.gyroHistory objectAtIndex:[accelView.gyroHistory count]-1];
-
-                            [accelView.csvOutput appendFormat:@"\n%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f",timeInMiliseconds,lastGrav.gravity.x,lastGrav.gravity.y,lastGrav.gravity.z,lastAccel.acceleration.x,
-                             lastAccel.acceleration.y,lastAccel.acceleration.z,lastGyro.rotationRate.x,lastGyro.rotationRate.y,lastGyro.rotationRate.z];
-//                            [accelView.csvOutput appendFormat:@"\n%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f",
-//                             timeInMiliseconds,lastGrav.gravity.x,lastGrav.gravity.y,lastGrav.gravity.z,lastAccel.acceleration.x,
-//                             lastAccel.acceleration.y,lastAccel.acceleration.z,lastGyro.rotationRate.x,lastGyro.rotationRate.y,
-//                             ,lastGyro.rotationRate.z];
+                            if([accelView.gravHistory count] > 0 && [accelView.accelHistory count] > 0 && [accelView.gyroHistory count] > 0)
+                            {
+                                CMDeviceMotion *lastGrav = [accelView.gravHistory objectAtIndex:[accelView.gravHistory count]-1];
+                                CMAccelerometerData *lastAccel = [accelView.accelHistory objectAtIndex:[accelView.accelHistory count]-1];
+                                CMGyroData *lastGyro = [accelView.gyroHistory objectAtIndex:[accelView.gyroHistory count]-1];
+                                
+                                [accelView.csvOutput appendFormat:@"\n%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f",timeInMiliseconds,lastGrav.gravity.x,lastGrav.gravity.y,lastGrav.gravity.z,lastAccel.acceleration.x,
+                                 lastAccel.acceleration.y,lastAccel.acceleration.z,lastGyro.rotationRate.x,lastGyro.rotationRate.y,lastGyro.rotationRate.z];
+                            }
                             
                         }
                         );
      }
      ];
     
-    self.motionManager.gyroUpdateInterval = 1/110.0f;
+    self.motionManager.gyroUpdateInterval = 1/150.0f;
     [self.motionManager
      startGyroUpdatesToQueue:[[NSOperationQueue alloc] init]
      withHandler:^(CMGyroData *data, NSError *error)
@@ -72,12 +71,13 @@ const int numInertialValuesStored = 300;
                             {
                                 [accelView.gyroHistory removeObjectAtIndex:0];
                             }
+                            
                         }
                         );
      }
      ];
 
-    self.motionManager.accelerometerUpdateInterval = 1/110.0f;
+    self.motionManager.accelerometerUpdateInterval = 1/150.0f;
     [self.motionManager
      startAccelerometerUpdatesToQueue:[[NSOperationQueue alloc] init]
      withHandler:^(CMAccelerometerData *data, NSError *error)
@@ -91,6 +91,7 @@ const int numInertialValuesStored = 300;
                             {
                                 [accelView.accelHistory removeObjectAtIndex:0];
                             }
+                            
                         }
                         );
      }
@@ -146,7 +147,9 @@ const int numInertialValuesStored = 300;
 }
 
 - (IBAction)stopButton:(id)sender {
-    [self.motionManager startDeviceMotionUpdates];
+    [self.motionManager stopDeviceMotionUpdates];
+    [self.motionManager stopAccelerometerUpdates];
+    [self.motionManager stopGyroUpdates];
     //self.textBox.text = [NSString stringWithFormat:@"Accel stopped"];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,  NSUserDomainMask, YES);
     NSString *documentsDirectoryPath = [paths objectAtIndex:0];
