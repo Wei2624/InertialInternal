@@ -39,18 +39,29 @@ const int numInertialValuesStored = 300;
                                 [accelView.gravHistory removeObjectAtIndex:0];
                             }
                             [accelView setNeedsDisplay];
-                            //NSTimeInterval timeInMiliseconds = [[NSDate date] timeIntervalSince1970];
-                            NSTimeInterval timeInMiliseconds = data.timestamp;
-                            NSLog(@"Time: %f", timeInMiliseconds);
+                            
+                            static NSTimeInterval prevTime; //holds the timestamp of the last sensor interrupt
+                            static dispatch_once_t once;
+                            
+                            dispatch_once(&once, ^{
+                                prevTime = data.timestamp;
+                                
+                            });
+                            NSTimeInterval currTime = data.timestamp;
+                            NSTimeInterval deltaT = currTime-prevTime; //time elapsed since last sensor interrupt
+                            NSLog(@"Time: %f", deltaT);
                             if([accelView.gravHistory count] > 0 && [accelView.accelHistory count] > 0 && [accelView.gyroHistory count] > 0)
                             {
                                 CMDeviceMotion *lastGrav = [accelView.gravHistory objectAtIndex:[accelView.gravHistory count]-1];
                                 CMAccelerometerData *lastAccel = [accelView.accelHistory objectAtIndex:[accelView.accelHistory count]-1];
                                 CMGyroData *lastGyro = [accelView.gyroHistory objectAtIndex:[accelView.gyroHistory count]-1];
                                 
-                                [accelView.csvOutput appendFormat:@"\n%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f",timeInMiliseconds,lastGrav.gravity.x,lastGrav.gravity.y,lastGrav.gravity.z,lastAccel.acceleration.x,
-                                 lastAccel.acceleration.y,lastAccel.acceleration.z,lastGyro.rotationRate.x,lastGyro.rotationRate.y,lastGyro.rotationRate.z];
+                                [accelView.csvOutput appendFormat:@"\n%f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f",deltaT,lastGyro.rotationRate.x,lastGyro.rotationRate.y,lastGyro.rotationRate.z,lastGrav.gravity.x,lastGrav.gravity.y,lastGrav.gravity.z,lastAccel.acceleration.x,
+                                 lastAccel.acceleration.y,lastAccel.acceleration.z];
                             }
+                            prevTime = currTime;
+                            int value = [self.count intValue];
+                            self.count = [NSNumber numberWithInt:value+1];
                             
                         }
                         );
@@ -110,7 +121,7 @@ const int numInertialValuesStored = 300;
     [accelView setGravHistory:[[NSMutableArray alloc] init]];
     [accelView setGyroHistory:[[NSMutableArray alloc] init]];
     [accelView setAccelHistory:[[NSMutableArray alloc] init]];
-    _textBox.delegate = self;
+    self.textBox.delegate = self;
     
     
 }
@@ -138,11 +149,13 @@ const int numInertialValuesStored = 300;
 - (IBAction)startButton:(id)sender {
     //self.textBox.text = [NSString stringWithFormat:@"Accel started"];
     [self startMyMotionDetect];
-    accelView.csvOutput = [NSMutableString stringWithString:@"Time,GravX,GravY,GravZ,AccelX,AccelY,AccelZ,GyroX,GyroY,GyroZ"];
+    accelView.csvOutput = [NSMutableString stringWithString:@"Time,GyroX,GyroY,GyroZ,GravX,GravY,GravZ,AccelX,AccelY,AccelZ"];
     [accelView setCanDraw:NO];
     [accelView setGravHistory:[[NSMutableArray alloc] init]];
     [accelView setGyroHistory:[[NSMutableArray alloc] init]];
     [accelView setAccelHistory:[[NSMutableArray alloc] init]];
+    self.labelPosition = [[NSMutableArray alloc] init];
+    self.count = [NSNumber numberWithInt:0];
     
 }
 
@@ -151,9 +164,31 @@ const int numInertialValuesStored = 300;
     [self.motionManager stopAccelerometerUpdates];
     [self.motionManager stopGyroUpdates];
     //self.textBox.text = [NSString stringWithFormat:@"Accel stopped"];
+    if([self.labelPosition count] > 0){
+        [accelView.csvOutput appendFormat:@"\nLabel Positions\n"];
+        for (int i = 0; i<[_labelPosition count]; i++) {
+            int pos = [[_labelPosition objectAtIndex:i] intValue];
+            [accelView.csvOutput appendFormat:@"%d,",pos];
+        }
+         
+    }
+    
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,  NSUserDomainMask, YES);
     NSString *documentsDirectoryPath = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectoryPath  stringByAppendingPathComponent:[self.textBox.text stringByAppendingString:@".csv"]];
+    NSString *filePath= nil;
+    if(self.textBox.text.length >0){
+            filePath = [documentsDirectoryPath  stringByAppendingPathComponent:[self.textBox.text stringByAppendingString:@".csv"]];
+    }
+    else{
+        NSDate *myDate = [NSDate date];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+        NSString *myDateString = [dateFormatter stringFromDate:myDate];
+
+        filePath = [documentsDirectoryPath  stringByAppendingPathComponent:[myDateString stringByAppendingString:@".csv"]];
+    }
+    
     
     
     NSData* settingsData;
@@ -163,10 +198,12 @@ const int numInertialValuesStored = 300;
         NSLog(@"writeok");
 }
 
-- (void)writeInertialDataToCSV
-{
-    
+- (IBAction)addLabel:(id)sender {
+    [self.labelPosition addObject:self.count];
+    NSString* buttonText = [NSString stringWithFormat:@"Add Label =%lu",(unsigned long)[self.labelPosition count]];
+    [_addLabel setTitle:buttonText forState:UIControlStateNormal];
 }
+
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     if (  textField ==  self.textBox ) {
@@ -192,7 +229,6 @@ const int numInertialValuesStored = 300;
     	self.view.frame = frame;
     	[UIView commitAnimations];
     }
-    // Additional Code
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

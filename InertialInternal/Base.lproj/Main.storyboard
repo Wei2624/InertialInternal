@@ -89,11 +89,21 @@
                                         </connections>
                                     </button>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="RiB-TD-DTG">
-                                        <rect key="frame" x="20" y="84" width="280" height="30"/>
+                                        <rect key="frame" x="20" y="119" width="280" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Bjk-ca-Qhc">
+                                        <rect key="frame" x="86" y="66" width="144" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Add label">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="addLabel:" destination="mAv-Oc-jfa" eventType="touchUpInside" id="Fgk-Ba-I5I"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
@@ -103,6 +113,7 @@
                     <navigationItem key="navigationItem" id="pPD-uU-9RN"/>
                     <connections>
                         <outlet property="accelView" destination="kJw-Ke-72r" id="I3m-Bo-G3W"/>
+                        <outlet property="addLabel" destination="Bjk-ca-Qhc" id="0m3-sU-nM2"/>
                         <outlet property="scrollView" destination="h69-ef-gKb" id="FqR-oo-hno"/>
                         <outlet property="textBox" destination="RiB-TD-DTG" id="GF6-3m-7JO"/>
                     </connections>

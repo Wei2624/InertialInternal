@@ -21,10 +21,16 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *textBox;
 
+@property (retain, nonatomic) NSMutableArray *labelPosition; //holds the times/counts when each label was added
+
+@property  (weak, nonatomic) NSNumber * count; //current sensor iterrupt iteration
+
 extern const int numInertialValuesStored;
+@property (weak, nonatomic) IBOutlet UIButton *addLabel;
 
 
 - (IBAction)startButton:(id)sender;
 - (IBAction)stopButton:(id)sender;
+- (IBAction)addLabel:(id)sender;
 
 @end
