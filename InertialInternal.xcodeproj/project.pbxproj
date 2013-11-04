@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9B23521B1826BCFC001DE3B7 /* E20SensorInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9B23521A1826BCFC001DE3B7 /* E20SensorInfo.mm */; };
+		9B23521F1826CD94001DE3B7 /* E203dDataPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B23521E1826CD94001DE3B7 /* E203dDataPoint.m */; };
+		9B2352221826F51D001DE3B7 /* E20OrientationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2352211826F51D001DE3B7 /* E20OrientationViewController.m */; };
+		9B2352251826FCC0001DE3B7 /* E20OrientationGraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2352241826FCC0001DE3B7 /* E20OrientationGraphView.m */; };
+		9B23522818273531001DE3B7 /* E20OrientationViewScrollSubClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B23522718273531001DE3B7 /* E20OrientationViewScrollSubClass.m */; };
 		9B4377521820B9EE00D50E0B /* E20AccelGraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B4377511820B9EE00D50E0B /* E20AccelGraphView.m */; };
 		9BB99D6B182063930061D126 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BB99D6A182063930061D126 /* Foundation.framework */; };
 		9BB99D6D182063930061D126 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BB99D6C182063930061D126 /* CoreGraphics.framework */; };
@@ -39,6 +44,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9B2352191826BCFC001DE3B7 /* E20SensorInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20SensorInfo.h; sourceTree = "<group>"; };
+		9B23521A1826BCFC001DE3B7 /* E20SensorInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = E20SensorInfo.mm; sourceTree = "<group>"; };
+		9B23521D1826CD94001DE3B7 /* E203dDataPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E203dDataPoint.h; sourceTree = "<group>"; };
+		9B23521E1826CD94001DE3B7 /* E203dDataPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E203dDataPoint.m; sourceTree = "<group>"; };
+		9B2352201826F51D001DE3B7 /* E20OrientationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20OrientationViewController.h; sourceTree = "<group>"; };
+		9B2352211826F51D001DE3B7 /* E20OrientationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20OrientationViewController.m; sourceTree = "<group>"; };
+		9B2352231826FCC0001DE3B7 /* E20OrientationGraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20OrientationGraphView.h; sourceTree = "<group>"; };
+		9B2352241826FCC0001DE3B7 /* E20OrientationGraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20OrientationGraphView.m; sourceTree = "<group>"; };
+		9B23522618273531001DE3B7 /* E20OrientationViewScrollSubClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20OrientationViewScrollSubClass.h; sourceTree = "<group>"; };
+		9B23522718273531001DE3B7 /* E20OrientationViewScrollSubClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20OrientationViewScrollSubClass.m; sourceTree = "<group>"; };
 		9B4377501820B9EE00D50E0B /* E20AccelGraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20AccelGraphView.h; sourceTree = "<group>"; };
 		9B4377511820B9EE00D50E0B /* E20AccelGraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20AccelGraphView.m; sourceTree = "<group>"; };
 		9BB99D67182063930061D126 /* InertialInternal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InertialInternal.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,9 +109,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9B23521C1826BD1E001DE3B7 /* SensorManipulation */ = {
+			isa = PBXGroup;
+			children = (
+				9B2352191826BCFC001DE3B7 /* E20SensorInfo.h */,
+				9B23521A1826BCFC001DE3B7 /* E20SensorInfo.mm */,
+				9B23521D1826CD94001DE3B7 /* E203dDataPoint.h */,
+				9B23521E1826CD94001DE3B7 /* E203dDataPoint.m */,
+			);
+			name = SensorManipulation;
+			sourceTree = "<group>";
+		};
 		9BB99D5E182063930061D126 = {
 			isa = PBXGroup;
 			children = (
+				9B23521C1826BD1E001DE3B7 /* SensorManipulation */,
 				9BB99DA7182074F80061D126 /* StoryBoard */,
 				9BB99D70182063930061D126 /* InertialInternal */,
 				9BB99D8F182063930061D126 /* InertialInternalTests */,
@@ -178,6 +205,12 @@
 				9BB99DA5182065650061D126 /* E20ContentItem.m */,
 				9BB99DA4182065650061D126 /* E20ContentItem.h */,
 				9BB99D7C182063930061D126 /* Main.storyboard */,
+				9B23522618273531001DE3B7 /* E20OrientationViewScrollSubClass.h */,
+				9B23522718273531001DE3B7 /* E20OrientationViewScrollSubClass.m */,
+				9B2352231826FCC0001DE3B7 /* E20OrientationGraphView.h */,
+				9B2352241826FCC0001DE3B7 /* E20OrientationGraphView.m */,
+				9B2352201826F51D001DE3B7 /* E20OrientationViewController.h */,
+				9B2352211826F51D001DE3B7 /* E20OrientationViewController.m */,
 				9BB99DA8182075490061D126 /* E20RecordViewScrollSubClass.h */,
 				9BB99DA9182075490061D126 /* E20RecordViewScrollSubClass.m */,
 			);
@@ -285,10 +318,15 @@
 				9BB99D81182063930061D126 /* E20ViewController.m in Sources */,
 				9BB99D7B182063930061D126 /* E20AppDelegate.m in Sources */,
 				9BB99DAA182075490061D126 /* E20RecordViewScrollSubClass.m in Sources */,
+				9B2352251826FCC0001DE3B7 /* E20OrientationGraphView.m in Sources */,
 				9BB99DA3182064820061D126 /* E20ContentViewController.m in Sources */,
 				9BB99DA6182065650061D126 /* E20ContentItem.m in Sources */,
+				9B23522818273531001DE3B7 /* E20OrientationViewScrollSubClass.m in Sources */,
+				9B23521F1826CD94001DE3B7 /* E203dDataPoint.m in Sources */,
 				9BB99D77182063930061D126 /* main.m in Sources */,
 				9B4377521820B9EE00D50E0B /* E20AccelGraphView.m in Sources */,
+				9B23521B1826BCFC001DE3B7 /* E20SensorInfo.mm in Sources */,
+				9B2352221826F51D001DE3B7 /* E20OrientationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

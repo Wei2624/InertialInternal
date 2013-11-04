@@ -24,6 +24,9 @@
     E20ContentItem *item2 = [[E20ContentItem alloc] init];
     item2.itemName = @"Eaton Center Map";
     [self.contentItems addObject:item2];
+    E20ContentItem *item3 = [[E20ContentItem alloc] init];
+    item3.itemName = @"Orientation Scheme";
+    [self.contentItems addObject:item3];
 
 }
 
@@ -139,6 +142,10 @@
     if (indexPath.row == 0)
     {
         [self performSegueWithIdentifier:@"segue1" sender:self];
+    }
+    if (indexPath.row == 2)
+    {
+        [self performSegueWithIdentifier:@"segue3" sender:self];
     }
 }
 

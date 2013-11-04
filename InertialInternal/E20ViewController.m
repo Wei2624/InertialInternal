@@ -58,6 +58,7 @@ const int numInertialValuesStored = 300;
                                 
                                 [accelView.csvOutput appendFormat:@"\n%f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f,%1.2f",deltaT,lastGyro.rotationRate.x,lastGyro.rotationRate.y,lastGyro.rotationRate.z,lastGrav.gravity.x,lastGrav.gravity.y,lastGrav.gravity.z,lastAccel.acceleration.x,
                                  lastAccel.acceleration.y,lastAccel.acceleration.z];
+
                             }
                             prevTime = currTime;
                             int value = [self.count intValue];

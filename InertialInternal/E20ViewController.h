@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 #import "E20AccelGraphView.h"
+#import "E20SensorInfo.h"
+
 
 
 @interface E20ViewController : UIViewController{
