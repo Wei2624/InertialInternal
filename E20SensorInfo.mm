@@ -15,16 +15,24 @@
 
 
 @implementation E20SensorInfo
-
+@synthesize  gyroRaw;
+@synthesize  gyroFiltered;
+@synthesize  gravRaw;
+@synthesize  gravFiltered;
+@synthesize  accelRaw;
+@synthesize  accelFiltered;
 
 
 -(id) init
 {
-
     self = [super init];
     if(self){
-        //Initializing all filterParam values
-       
+        gyroRaw = [[NSMutableArray alloc] init];
+        gyroFiltered = [[NSMutableArray alloc] init];
+        gravRaw = [[NSMutableArray alloc] init];
+        gravFiltered = [[NSMutableArray alloc] init];
+        accelRaw = [[NSMutableArray alloc] init];
+        accelFiltered = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -62,8 +70,8 @@
         outputSignal[2] += dataPoint.z*weights[i];
         
     }
-    
-    E203dDataPoint* rawPoint = [sensorHistory objectAtIndex:M];
+    E203dDataPoint* sourcePoint = [sensorHistory objectAtIndex:M];
+    E203dDataPoint* rawPoint = [E203dDataPoint copyDataPoint:sourcePoint];
     [rawData addObject:rawPoint];
     E203dDataPoint* filteredPoint = [E203dDataPoint dataPointFromDouble:outputSignal];
     [filteredData addObject:filteredPoint];

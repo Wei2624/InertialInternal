@@ -15,6 +15,6 @@
 @property    NSTimeInterval timeStamp;
 
 +(E203dDataPoint*) dataPointFromDouble:(double *) values;
-
++(E203dDataPoint*) copyDataPoint:(E203dDataPoint *) sourcePoint;
 
 @end

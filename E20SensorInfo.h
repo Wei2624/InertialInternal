@@ -14,14 +14,16 @@
 
 @interface E20SensorInfo : NSObject
 
-@property (weak,nonatomic) NSMutableArray* gyroRaw;
-@property (weak,nonatomic) NSMutableArray* gyroFiltered;
-@property (weak,nonatomic) NSMutableArray* gravRaw;
-@property (weak,nonatomic) NSMutableArray* gravFiltered;
-@property (weak,nonatomic) NSMutableArray* accelRaw;
-@property (weak,nonatomic) NSMutableArray* accelFiltered;
+@property (retain,nonatomic) NSMutableArray* gyroRaw;
+@property (retain,nonatomic) NSMutableArray* gyroFiltered;
+@property (retain,nonatomic) NSMutableArray* gravRaw;
+@property (retain,nonatomic) NSMutableArray* gravFiltered;
+@property (retain,nonatomic) NSMutableArray* accelRaw;
+@property (retain,nonatomic) NSMutableArray* accelFiltered;
 
 + (void)setRawAndFilteredValueWithInput:(NSMutableArray *) sensorHistory withFilterParam:(NSArray*) filterParam forRawData:(NSMutableArray *) rawData forFilteredData:(NSMutableArray *) filteredData;
+
+
 
 
 

@@ -58,7 +58,7 @@
                             });
                             NSTimeInterval currTime = data.timestamp;
                             [orientationView setCanDraw:YES];
-                            E203dDataPoint *dataPoint;
+                            E203dDataPoint *dataPoint = [[E203dDataPoint alloc] init];
                             dataPoint.x = data.gravity.x;
                             dataPoint.y = data.gravity.y;
                             dataPoint.z = data.gravity.z;
@@ -70,7 +70,10 @@
                                     //check if it's ok to start filtering signals, as I'd like all of them to be synchronized with enough
                                     //data points
                                     [E20SensorInfo setRawAndFilteredValueWithInput:orientationView.gravHistory withFilterParam:filterParam forRawData:sensorInfoData.gravRaw forFilteredData:sensorInfoData.gravFiltered];
+                                    [E20SensorInfo setRawAndFilteredValueWithInput:orientationView.gyroHistory withFilterParam:filterParam forRawData:sensorInfoData.gyroRaw forFilteredData:sensorInfoData.gyroFiltered];
+                                    [E20SensorInfo setRawAndFilteredValueWithInput:orientationView.accelHistory withFilterParam:filterParam forRawData:sensorInfoData.accelRaw forFilteredData:sensorInfoData.accelFiltered];
                                 }
+                                NSLog(@"%lu, %lu, %lu, %f",[sensorInfoData.gravFiltered count],[sensorInfoData.gyroFiltered count],[sensorInfoData.accelFiltered count],dataPoint.timeStamp);
                             }
                             prevTime = currTime;
                         }
@@ -94,7 +97,7 @@
                             });
                             NSTimeInterval currTime = data.timestamp;
                             [orientationView setCanDraw:YES];
-                            E203dDataPoint *dataPoint;
+                            E203dDataPoint *dataPoint = [[E203dDataPoint alloc] init];
                             dataPoint.x = data.rotationRate.x;
                             dataPoint.y = data.rotationRate.y;
                             dataPoint.z = data.rotationRate.z;
@@ -125,7 +128,7 @@
                             });
                             NSTimeInterval currTime = data.timestamp;
                             [orientationView setCanDraw:YES];
-                            E203dDataPoint *dataPoint;
+                            E203dDataPoint *dataPoint = [[E203dDataPoint alloc] init];
                             dataPoint.x = data.acceleration.x;
                             dataPoint.y = data.acceleration.y;
                             dataPoint.z = data.acceleration.z;
@@ -148,10 +151,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    [self.scrollView setScrollEnabled:YES];
-//    [self.scrollView setContentSize:(CGSizeMake(500, 500))];
-//    
-//    [orientationView setCanDraw:NO];
+    [self.scrollView setScrollEnabled:YES];
+    [self.scrollView setContentSize:(CGSizeMake(500, 500))];
+    
+    [orientationView setCanDraw:NO];
     
 
 }
@@ -176,17 +179,20 @@
 }
 
 
+
 - (IBAction)startOrientation:(id)sender {
     [self startOrientationTracking];
     [orientationView setCanDraw:NO];
     [orientationView setGravHistory:[[NSMutableArray alloc] init]];
     [orientationView setGyroHistory:[[NSMutableArray alloc] init]];
     [orientationView setAccelHistory:[[NSMutableArray alloc] init]];
+    sensorInfoData = [[E20SensorInfo alloc] init];
 
 }
 
 - (IBAction)stopOrientation:(id)sender {
 }
+
 
 - (IBAction)resetOrientation:(id)sender {
 }
