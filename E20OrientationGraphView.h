@@ -10,6 +10,7 @@
 #import <CoreMotion/CoreMotion.h>
 #import "E20SensorInfo.h"
 #import "E203dDataPoint.h"
+#import "E201dDataPoint.h"
 
 
 @interface E20OrientationGraphView : UIView
@@ -18,6 +19,7 @@
 @property (nonatomic,strong) NSMutableArray* gravHistory;
 @property (nonatomic,strong) NSMutableArray* accelHistory;
 @property (nonatomic,strong) NSMutableArray* gyroHistory;
+@property (nonatomic,strong) NSMutableArray* gyroPlanarizedHistory;
 
 
 

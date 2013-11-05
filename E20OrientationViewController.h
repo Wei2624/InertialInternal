@@ -20,6 +20,7 @@
 @property (retain, nonatomic) E20SensorInfo* sensorInfoData;  //stores all the filtered and manipulated data
 
 
+
 - (IBAction)startOrientation:(id)sender;
 - (IBAction)stopOrientation:(id)sender;
 - (IBAction)resetOrientation:(id)sender;

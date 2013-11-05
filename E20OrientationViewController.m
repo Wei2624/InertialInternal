@@ -45,12 +45,30 @@
          
          dispatch_async(dispatch_get_main_queue(),
                         ^{
-
+                            /*PPPLLLLEEEEEAAASEEE break this block down into subfunctions*/
                             NSArray *filterParam = [NSArray arrayWithObjects:
                                                     [NSNumber numberWithInteger:filterLength],
                                                     [NSNumber numberWithDouble:0.47733],
                                                     [NSNumber numberWithDouble:0.66299],
                                                     [NSNumber numberWithDouble:samplingFreq],nil];
+                            NSArray *whittParam0 = [NSArray arrayWithObjects:
+                                                    [NSNumber numberWithInteger:filterLength],
+                                                    [NSNumber numberWithDouble:295.3554],
+                                                    [NSNumber numberWithInt:38],
+                                                    [NSNumber numberWithDouble:0.004762],
+                                                    [NSNumber numberWithInt:298],nil];
+                            NSArray *whittParam1 = [NSArray arrayWithObjects:
+                                                    [NSNumber numberWithInteger:filterLength],
+                                                    [NSNumber numberWithDouble:584.0116],
+                                                    [NSNumber numberWithInt:23],
+                                                    [NSNumber numberWithDouble:0.004351],
+                                                    [NSNumber numberWithInt:300],nil];
+                            NSArray *whittParam2 = [NSArray arrayWithObjects:
+                                                    [NSNumber numberWithInteger:filterLength],
+                                                    [NSNumber numberWithDouble:600.5476],
+                                                    [NSNumber numberWithInt:37],
+                                                    [NSNumber numberWithDouble:0.0022],
+                                                    [NSNumber numberWithInt:441],nil];
                             static NSTimeInterval prevTime; //holds the timestamp of the last sensor interrupt
                             static dispatch_once_t once;
                             dispatch_once(&once, ^{
@@ -66,14 +84,29 @@
                             [orientationView.gravHistory addObject:dataPoint];
                             if([orientationView.gravHistory count] > filterLength){
                                 [orientationView.gravHistory removeObjectAtIndex:0];
-                                if([orientationView.gyroHistory count] >= filterLength && [orientationView.accelHistory count] >= filterLength){
+                                if([orientationView.gyroHistory count] >= filterLength && [orientationView.accelHistory count] >= filterLength && [orientationView.gyroPlanarizedHistory count] >=filterLength){
                                     //check if it's ok to start filtering signals, as I'd like all of them to be synchronized with enough
                                     //data points
-                                    [E20SensorInfo setRawAndFilteredValueWithInput:orientationView.gravHistory withFilterParam:filterParam forRawData:sensorInfoData.gravRaw forFilteredData:sensorInfoData.gravFiltered];
-                                    [E20SensorInfo setRawAndFilteredValueWithInput:orientationView.gyroHistory withFilterParam:filterParam forRawData:sensorInfoData.gyroRaw forFilteredData:sensorInfoData.gyroFiltered];
-                                    [E20SensorInfo setRawAndFilteredValueWithInput:orientationView.accelHistory withFilterParam:filterParam forRawData:sensorInfoData.accelRaw forFilteredData:sensorInfoData.accelFiltered];
+                                    [E20SensorInfo set3dRawAndFilteredValueWithInput:orientationView.gravHistory withFilterParam:filterParam forRawData:sensorInfoData.gravRaw forFilteredData:sensorInfoData.gravFiltered];
+                                    [E20SensorInfo set3dRawAndFilteredValueWithInput:orientationView.gyroHistory withFilterParam:filterParam forRawData:sensorInfoData.gyroRaw forFilteredData:sensorInfoData.gyroFiltered];
+                                    [E20SensorInfo set3dRawAndFilteredValueWithInput:orientationView.accelHistory withFilterParam:filterParam forRawData:sensorInfoData.accelRaw forFilteredData:sensorInfoData.accelFiltered];
+                                    [E20SensorInfo set1dRawAndFilteredValueWithInput:orientationView.gyroPlanarizedHistory withFilterParam:filterParam forRawData:sensorInfoData.gyroPlanarizedRaw forFilteredData:sensorInfoData.gyroPlanarizedFiltered];
+                                    if([sensorInfoData.gyroFiltered count]>= maxSensorHistoryStored){
+                                        E201dDataPoint* gyroPlanarizedRawPoint = [sensorInfoData.gyroPlanarizedRaw objectAtIndex:0];
+                                        int phoneOrientation = gyroPlanarizedRawPoint.phoneOrientation;
+                                        if(phoneOrientation ==0){
+                                            [E20SensorInfo updateGyroWhittaker:sensorInfoData.gyroWhittaker WithParam:whittParam0 forGyroPlanarizedRaw:sensorInfoData.gyroPlanarizedRaw forGyroPlanarizedFiltered:sensorInfoData.gyroPlanarizedFiltered];
+                                        }
+                                        else if(phoneOrientation ==1){
+                                            [E20SensorInfo updateGyroWhittaker:sensorInfoData.gyroWhittaker WithParam:whittParam1 forGyroPlanarizedRaw:sensorInfoData.gyroPlanarizedRaw forGyroPlanarizedFiltered:sensorInfoData.gyroPlanarizedFiltered];
+                                        }
+                                        else{
+                                            [E20SensorInfo updateGyroWhittaker:sensorInfoData.gyroWhittaker WithParam:whittParam2 forGyroPlanarizedRaw:sensorInfoData.gyroPlanarizedRaw forGyroPlanarizedFiltered:sensorInfoData.gyroPlanarizedFiltered];
+                                        }
+                                    }
+
                                 }
-                                NSLog(@"%lu, %lu, %lu, %f",[sensorInfoData.gravFiltered count],[sensorInfoData.gyroFiltered count],[sensorInfoData.accelFiltered count],dataPoint.timeStamp);
+                                NSLog(@"%lu, %lu, %lu, %lu, %f",[sensorInfoData.gravFiltered count],[sensorInfoData.gyroFiltered count],[sensorInfoData.accelFiltered count],[sensorInfoData.gyroWhittaker count],dataPoint.timeStamp);
                             }
                             prevTime = currTime;
                         }
@@ -105,6 +138,13 @@
                             [orientationView.gyroHistory addObject:dataPoint];
                             if([orientationView.gyroHistory count] > filterLength){
                                 [orientationView.gyroHistory removeObjectAtIndex:0];
+                            }
+                            if([orientationView.gravHistory count] >0){
+                                E201dDataPoint *gyroPlanarizedPoint = [E20SensorInfo getGyroPlanarizedForGrav:orientationView.gravHistory ForGyro:orientationView.gyroHistory];
+                                [orientationView.gyroPlanarizedHistory addObject:gyroPlanarizedPoint];
+                                if([orientationView.gyroPlanarizedHistory count]>filterLength){
+                                    [orientationView.gyroPlanarizedHistory removeObjectAtIndex:0];
+                                }
                             }
                             prevTime = currTime;
                         }
@@ -186,11 +226,15 @@
     [orientationView setGravHistory:[[NSMutableArray alloc] init]];
     [orientationView setGyroHistory:[[NSMutableArray alloc] init]];
     [orientationView setAccelHistory:[[NSMutableArray alloc] init]];
+    [orientationView setGyroPlanarizedHistory:[[NSMutableArray alloc] init]];
     sensorInfoData = [[E20SensorInfo alloc] init];
 
 }
 
 - (IBAction)stopOrientation:(id)sender {
+    [self.motionManager stopDeviceMotionUpdates];
+    [self.motionManager stopAccelerometerUpdates];
+    [self.motionManager stopGyroUpdates];
 }
 
 

@@ -15,6 +15,7 @@
     self = [super init];
     if(self){
         self.timeStamp = -1; //default value if not set
+        self.phoneOrientation = -1; //default value if not set
     }
     return self;
 }
@@ -40,5 +41,31 @@
     return dataPoint;
 }
 
+-(void) normalizeDataPoint{
+    E203dDataPoint* dataPoint = self;
+    double sum = pow(dataPoint.x,2)+pow(dataPoint.y,2)+pow(dataPoint.z,2);
+    sum = pow(sum,0.5);
+    dataPoint.x = dataPoint.x/sum;
+    dataPoint.y = dataPoint.y/sum;
+    dataPoint.z = dataPoint.z/sum;
+}
+
+-(double) dotProductWith:(E203dDataPoint*) secondPoint{
+    E203dDataPoint* firstPoint = self;
+    double sum = firstPoint.x*secondPoint.x+firstPoint.y*secondPoint.y+firstPoint.z*secondPoint.z;
+    return sum;
+}
+
++(int) indexOfMaxAbsValueOfDataPoint:(E203dDataPoint *) dataPoint{
+    if(ABS(dataPoint.x)>=ABS(dataPoint.y) && ABS(dataPoint.x)>=ABS(dataPoint.z)){
+        return 0;
+    }
+    else if(ABS(dataPoint.y)>=ABS(dataPoint.x) && ABS(dataPoint.y)>=ABS(dataPoint.z)){
+        return 1;
+    }
+    else{
+        return 2;
+    }
+}
 
 @end
