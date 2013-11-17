@@ -16,7 +16,9 @@
     self = [super init];
     if(self){
         self.timeStamp = -1; //default value if not set
+        self.phoneOrientation = -1; //default value if not set
     }
+    
     return self;
 }
 
@@ -35,6 +37,7 @@
     if (sourcePoint.timeStamp != -1){
         dataPoint.timeStamp=sourcePoint.timeStamp;
     }
+    dataPoint.phoneOrientation = sourcePoint.phoneOrientation;
     return dataPoint;
 }
 

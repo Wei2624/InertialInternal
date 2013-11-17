@@ -68,4 +68,16 @@
     }
 }
 
+-(double) getValueOf:(int) index{
+    if (index==0) {
+        return self.x;
+    }
+    else if (index==1){
+        return self.y;
+    }
+    else{
+        return self.z;
+    }
+}
+
 @end

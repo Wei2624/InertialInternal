@@ -27,6 +27,9 @@
     E20ContentItem *item3 = [[E20ContentItem alloc] init];
     item3.itemName = @"Orientation Scheme";
     [self.contentItems addObject:item3];
+    E20ContentItem *item4 = [[E20ContentItem alloc] init];
+    item4.itemName = @"Step Detection";
+    [self.contentItems addObject:item4];
 
 }
 
@@ -146,6 +149,10 @@
     if (indexPath.row == 2)
     {
         [self performSegueWithIdentifier:@"segue3" sender:self];
+    }
+    if (indexPath.row == 4)
+    {
+        [self performSegueWithIdentifier:@"segue4" sender:self];
     }
 }
 

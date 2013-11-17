@@ -9,6 +9,7 @@
 
 #import "E20SensorInfo.h"
 #include <math.h>
+#include <vector>
 
 
 #define _USE_MATH_DEFINES
@@ -76,7 +77,7 @@
         outputSignal[2] += dataPoint.z*weights[i];
         
     }
-    E203dDataPoint* sourcePoint = [sensorHistory objectAtIndex:M];
+    E203dDataPoint* sourcePoint = [sensorHistory objectAtIndex:M/2];
     E203dDataPoint* rawPoint = [E203dDataPoint copyDataPoint:sourcePoint];
     [rawData addObject:rawPoint];
     if([rawData count]>maxSensorHistoryStored){
@@ -120,7 +121,7 @@
         E201dDataPoint* dataPoint = [sensorHistory objectAtIndex:i];
         outputSignal += dataPoint.value*weights[i];
     }
-    E201dDataPoint* sourcePoint = [sensorHistory objectAtIndex:M];
+    E201dDataPoint* sourcePoint = [sensorHistory objectAtIndex:M/2];
     E201dDataPoint* rawPoint = [E201dDataPoint copyDataPoint:sourcePoint];
     [rawData addObject:rawPoint];
     if([rawData count]>maxSensorHistoryStored){
@@ -140,7 +141,7 @@
     E203dDataPoint* axis = [gravHistory objectAtIndex:[gravHistory count]-1];
     [axis normalizeDataPoint];
     E203dDataPoint* gyroPoint = [gyroHistory objectAtIndex:[gyroHistory count]-1];
-    double gyroPlanarized = [gyroPoint dotProductWith:axis];
+    double gyroPlanarized = [gyroPoint dotProductWith:axis]*gyroPoint.timeStamp;
     E201dDataPoint* gyroPlanarizedPoint = [E201dDataPoint dataPointFromDouble:gyroPlanarized];
     gyroPlanarizedPoint.timeStamp = gyroPoint.timeStamp;
     gyroPlanarizedPoint.phoneOrientation = [E20SensorInfo getPhoneOrientationWithRespectToGravity:gravHistory];
@@ -155,7 +156,7 @@
     return orientation;
 }
 
-+(void) updateGyroWhittaker:(NSMutableArray*)gyroWhittaker WithParam: (NSArray*) whittakerParam forGyroPlanarizedRaw: (NSMutableArray*) gyroPlanarizedRaw forGyroPlanarizedFiltered: (NSMutableArray*) gyroPlanarizedFiltered{
++(E201dDataPoint*) updateGyroWhittaker:(NSMutableArray*)gyroWhittaker WithParam: (NSArray*) whittakerParam forGyroPlanarizedRaw: (NSMutableArray*) gyroPlanarizedRaw forGyroPlanarizedFiltered: (NSMutableArray*) gyroPlanarizedFiltered{
     /*estimates bias noise of gyroPlanarized: reference matlab file is whittrecursive1.m
      gyroWhittaker is the array where corrected gyroPlanarized values are being stored
      whittakerParam are parameters customized based on phoneOrientation
@@ -164,8 +165,8 @@
      */
     
     static double zbefore = 0;
-    static double zbavg = 0;
-    static double zbnum = 0;
+    static double zbavg[3] = {0};
+    static double zbnum[3] = {0};
     static int spikeLag=0;
     int filterLength = [[whittakerParam objectAtIndex:0] intValue];
     double lambda1 = [[whittakerParam objectAtIndex:1] doubleValue];
@@ -173,29 +174,29 @@
     int offset = [[whittakerParam objectAtIndex:2] intValue];
     double spikeThreshold = [[whittakerParam objectAtIndex:3] doubleValue];
     int spikeLagReset = [[whittakerParam objectAtIndex:4] intValue];
-    double* weights = new double[filterLength];
-    weights[0] = weights[filterLength-1] = 1/24.0;
-    for (int i =1; i<filterLength-1; i++) {
-        weights[i] = 1/12.0;
-    }
-    double mav =0;
+    double avgs =0;
     double z = 0; //baseline for current sensor values
-    for(int i =0;i<filterLength;i++){
-        //dot product of filteredGyro and weights...should probably create dot product function for this later
-        //mav looks slightly into the future to see if there is any active/abnormal movement signalling turning
-        E201dDataPoint* gyroPlanarizedFilteredPoint = [gyroPlanarizedFiltered objectAtIndex:(i+offset)];
-        mav += gyroPlanarizedFilteredPoint.value*weights[i];
+    for(int i =1;i<filterLength;i++){
+        //Looks at the average differences in the filtered signal, when average differences high indicates turning
+        //avgs looks slightly into the future to see if there is any active/abnormal movement signalling turning
+        E201dDataPoint* gyroPlanarizedFilteredPoint1 = [gyroPlanarizedFiltered objectAtIndex:(i-1+offset)];
+        E201dDataPoint* gyroPlanarizedFilteredPoint2 = [gyroPlanarizedFiltered objectAtIndex:(i+offset)];
+        avgs += gyroPlanarizedFilteredPoint2.value-gyroPlanarizedFilteredPoint1.value;
     }
+    avgs = avgs/filterLength;
     E201dDataPoint* gyroWhittakerPoint = [[E201dDataPoint alloc] init];
-    if(ABS(mav)>spikeThreshold || spikeLag>0){
-        z = zbavg;
+    if(ABS(avgs)>spikeThreshold || spikeLag>0){
         E201dDataPoint* gyroPlanarizedPoint = [gyroPlanarizedRaw objectAtIndex:0];
+        int orient = gyroPlanarizedPoint.phoneOrientation;
+        z = zbavg[orient];
+        //z = zbefore;
+
         gyroWhittakerPoint.value = gyroPlanarizedPoint.value-z;
         gyroWhittakerPoint.timeStamp = gyroPlanarizedPoint.timeStamp;
         gyroWhittakerPoint.phoneOrientation = gyroPlanarizedPoint.phoneOrientation;
         if(spikeLag<=0){
             spikeLag = spikeLagReset;
-            zbnum = 0;
+            zbnum[orient] = 0;
         }
         else{
             spikeLag--;
@@ -203,18 +204,139 @@
     }
     else{
         E201dDataPoint* gyroPlanarizedPoint = [gyroPlanarizedRaw objectAtIndex:0];
+        int orient = gyroPlanarizedPoint.phoneOrientation;
         z = (gyroPlanarizedPoint.value + lambda1*zbefore)/(1+lambda1);
-        zbnum = zbnum+1;
-        zbavg = (zbavg*(zbnum-1) + zbefore)/zbnum;
+        zbnum[orient] = zbnum[orient]+1;
+        zbavg[orient] = (zbavg[orient]*(zbnum[orient]-1) + zbefore)/zbnum[orient];
         gyroWhittakerPoint.value = gyroPlanarizedPoint.value-z;
         gyroWhittakerPoint.timeStamp = gyroPlanarizedPoint.timeStamp;
         gyroWhittakerPoint.phoneOrientation = gyroPlanarizedPoint.phoneOrientation;
     }
+    zbefore = z;
     [gyroWhittaker addObject:gyroWhittakerPoint];
     if([gyroWhittaker count] > maxSensorHistoryStored){
         [gyroWhittaker removeObjectAtIndex:0];
     }
+    NSLog(@"spikeLag: %d",spikeLag);
+    return [E201dDataPoint copyDataPoint:gyroWhittakerPoint];
+}
+
++(bool) updateStepsDetectedUsingRawAccel: (NSMutableArray*) accelRaw filteredAccel: (NSMutableArray*) accelFiltered rawGyro:(NSMutableArray*) gyroRaw filteredGyro: (NSMutableArray*) gyroFiltered withKeyIndex: (int) keyIndex andStepParam:(NSArray*) stepParam{
+        /*put description here*/
+    double diffPrev = [[accelFiltered objectAtIndex:2] getValueOf:keyIndex]- [[accelFiltered objectAtIndex:1] getValueOf:keyIndex];
+    double diffCurr = [[accelFiltered objectAtIndex:1] getValueOf:keyIndex]- [[accelFiltered objectAtIndex:0] getValueOf:keyIndex];
+    static int derivBefore = copysign(1,diffPrev);
+    static int signChange =0;
+    static int lagTime = [[stepParam objectAtIndex:0] intValue];
+    static NSMutableArray* currStepData = [[NSMutableArray alloc] init];
+
+    int derivNow = copysign(1,diffCurr);
+    if(derivNow!=derivBefore){
+        signChange++;
+    }
+    else{
+        lagTime--;
+        [E20SensorInfo updateCurrentStepData:currStepData withAccel:accelFiltered andGyro:gyroFiltered];
+    }
+    if(signChange>=2){
+        if(lagTime<1){
+            NSMutableArray* magnitudeCurrentStepData = [E20SensorInfo magnitudeCurrentStepData:currStepData];
+            [E20SensorInfo normalizeCurrentStepData:currStepData];
+            NSMutableArray* avgCurrentStepData = [E20SensorInfo avgCurrentStepData:currStepData];
+            NSMutableArray* varCurrentStepData = [E20SensorInfo varianceCurrentStepData:currStepData withAvg:avgCurrentStepData];
+         
+            
+        }
+        signChange=0;
+    }
+    return false;
+}
+
++(void) updateCurrentStepData:(NSMutableArray*) currStepData withAccel: (NSMutableArray*) accelFiltered andGyro: (NSMutableArray*) gyroFiltered{
+    /*loads currStepData with current filtered sensor readings, uses this to measure variance, magnitude, dot product of step*/
+    NSArray* nsArray = [NSArray arrayWithObjects:[NSNumber numberWithDouble:[[accelFiltered objectAtIndex:0] getValueOf:0]],
+                       [NSNumber numberWithDouble:[[accelFiltered objectAtIndex:0] getValueOf:1]],
+                       [NSNumber numberWithDouble:[[accelFiltered objectAtIndex:0] getValueOf:2]],
+                       [NSNumber numberWithDouble:[[gyroFiltered objectAtIndex:0] getValueOf:0]],
+                       [NSNumber numberWithDouble:[[gyroFiltered objectAtIndex:0] getValueOf:1]],
+                       [NSNumber numberWithDouble:[[gyroFiltered objectAtIndex:0] getValueOf:2]],
+                        nil];
+    [currStepData addObject:nsArray];
     
+}
+
++(NSMutableArray*) magnitudeCurrentStepData: (NSMutableArray*) currStepData{
+    /*calculate magnitude of current step data*/
+    double mag[] = {0,0,0,0,0,0};
+    for (int i=0; i<[currStepData count]; i++) {
+        NSArray* nsArray = [currStepData objectAtIndex:i];
+        for(int j=0;j<6;j++){
+            mag[j]+= pow([[nsArray objectAtIndex:j] doubleValue],2);
+        }
+    }
+    NSMutableArray * nsMag = [[NSMutableArray alloc] init];
+    for(int i=0;i<6;i++){
+        NSNumber* value = [NSNumber numberWithDouble:mag[i]];
+        [nsMag addObject:value];
+    }
+    
+    return nsMag;
+}
+
++(NSMutableArray*) avgCurrentStepData: (NSMutableArray*) currStepData{
+    /*calculate average of current step data*/
+    double avg[] = {0,0,0,0,0,0};
+    for (int i=0; i<[currStepData count]; i++) {
+        NSArray* nsArray = [currStepData objectAtIndex:i];
+        for(int j=0;j<6;j++){
+            avg[j]+= [[nsArray objectAtIndex:j] doubleValue];
+        }
+    }
+    NSMutableArray * nsAvg = [[NSMutableArray alloc] init];
+    for(int i=0;i<6;i++){
+        NSNumber* value = [NSNumber numberWithDouble:avg[i]/(double)[currStepData count]];
+        [nsAvg addObject:value];
+    }
+    
+    return nsAvg;
+}
+
++(NSMutableArray*) varianceCurrentStepData: (NSMutableArray*) currStepData withAvg: (NSMutableArray*) avg ;{
+    /*calculate variance of current step data*/
+    double var[] = {0,0,0,0,0,0};
+    for (int i=0; i<[currStepData count]; i++) {
+        NSArray* nsArray = [currStepData objectAtIndex:i];
+        for(int j=0;j<6;j++){
+            var[j]+= pow([[nsArray objectAtIndex:j] doubleValue]-[[avg objectAtIndex:j] doubleValue],2);
+        }
+    }
+    NSMutableArray * nsVar = [[NSMutableArray alloc] init];
+    for(int i=0;i<6;i++){
+        NSNumber* value = [NSNumber numberWithDouble:var[i]/(double)[currStepData count]];
+        [nsVar addObject:value];
+    }
+    
+    return nsVar;
+}
+
+
++(void) normalizeCurrentStepData: (NSMutableArray*) currStepData{
+    /*normalize current step data such that all values for ax,ay,az,gx,gy,gz have sumsqr 1*/
+    double mag[] = {0,0,0,0,0,0};
+    for (int i=0; i<[currStepData count]; i++) {
+        NSArray* nsArray = [currStepData objectAtIndex:i];
+        for(int j=0;j<6;j++){
+            mag[j]+= pow([[nsArray objectAtIndex:j] doubleValue],2);
+        }
+    }
+    for (int i=0; i<[currStepData count]; i++) {
+        NSArray* nsArray = [currStepData objectAtIndex:i];
+        for(int j=0;j<6;j++){
+            NSNumber* number = [nsArray objectAtIndex:j];
+            double value = [number doubleValue]/pow(mag[j],0.5);
+            number = [NSNumber numberWithDouble:value];
+        }
+    }
 }
 
 @end

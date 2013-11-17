@@ -12,7 +12,7 @@
 
 
 
-#define maxSensorHistoryStored 300
+#define maxSensorHistoryStored 200
 
 @interface E20SensorInfo : NSObject
 
@@ -31,16 +31,24 @@
 + (void)set1dRawAndFilteredValueWithInput:(NSMutableArray *) sensorHistory withFilterParam:(NSArray*) filterParam forRawData:(NSMutableArray *) rawData forFilteredData:(NSMutableArray *) filteredData; //sycnhronizing raw and filtered values for 1d datapoints
 
 + (E201dDataPoint*)getGyroPlanarizedForGrav: (NSMutableArray *) gravHistory ForGyro: (NSMutableArray *) gyroHistory; //returns a 1dDataPoint
-                                                                                                                    //using the last gyro and
-                                                                                                                    //gravity measurements
+                //using the last gyro and gravity measurements
 
 
 +(int) getPhoneOrientationWithRespectToGravity:(NSMutableArray*) gravHistory;
 
-+(void) updateGyroWhittaker:(NSMutableArray*)gyroWhittaker WithParam: (NSArray*) whittakerParam forGyroPlanarizedRaw: (NSMutableArray*) gyroPlanarizedRaw forGyroPlanarizedFiltered: (NSMutableArray*) gyroPlanarizedFiltered;
++(E201dDataPoint*) updateGyroWhittaker:(NSMutableArray*)gyroWhittaker WithParam: (NSArray*) whittakerParam forGyroPlanarizedRaw: (NSMutableArray*) gyroPlanarizedRaw forGyroPlanarizedFiltered: (NSMutableArray*) gyroPlanarizedFiltered;
 
++(bool) updateStepsDetectedUsingRawAccel: (NSMutableArray*) accelRaw filteredAccel: (NSMutableArray*) accelFiltered rawGyro:(NSMutableArray*) gyroRaw filteredGyro: (NSMutableArray*) gyroFiltered withKeyIndex: (int) keyIndex andStepParam:(NSArray*) stepParam;
 
++(void) updateCurrentStepData:(NSMutableArray*) currStepData withAccel: (NSMutableArray*) accelFiltered andGyro: (NSMutableArray*) gyroFiltered;
 
++(void) normalizeCurrentStepData: (NSMutableArray*) currStepData;
+
++(NSMutableArray*) magnitudeCurrentStepData: (NSMutableArray*) currStepData;
+
++(NSMutableArray*) avgCurrentStepData: (NSMutableArray*) currStepData;
+
++(NSMutableArray*) varianceCurrentStepData: (NSMutableArray*) currStepData withAvg: (NSMutableArray*) avg ;
 
 
 

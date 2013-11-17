@@ -24,4 +24,6 @@
 -(double) dotProductWith:(E203dDataPoint*) secondPoint;
 +(int) indexOfMaxAbsValueOfDataPoint:(E203dDataPoint *) dataPoint; //returns index (0,1,2) depending on whether x,y,or z is greatest in magnitude
 
+-(double) getValueOf:(int) index;
+
 @end

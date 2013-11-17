@@ -11,6 +11,7 @@
 #import "E20SensorInfo.h"
 #import "E203dDataPoint.h"
 #import "E201dDataPoint.h"
+#import "E20Matrix.h"
 
 
 @interface E20OrientationGraphView : UIView
@@ -20,8 +21,17 @@
 @property (nonatomic,strong) NSMutableArray* accelHistory;
 @property (nonatomic,strong) NSMutableArray* gyroHistory;
 @property (nonatomic,strong) NSMutableArray* gyroPlanarizedHistory;
+@property (nonatomic,strong) NSMutableArray* gyroWhitt; //debug puposes copied from sensorinfo to display
+@property (nonatomic,strong) NSMutableArray* positionHistory;
+
+@property (nonatomic, strong) E20Matrix* orientationVector;
+@property (nonatomic, strong) E20Matrix* positionVector;
+
+@property (nonatomic,strong) NSMutableString* csvOutput; //general grav,gyro,accel data straight form sensors
+@property (nonatomic,strong) NSMutableString* csvOutput2; //gyroplanarized raw and filtered and whittaker point
 
 
+-(void) updateOrientationVectorWithPlanarizedGyroPoint:(E201dDataPoint *) gyroPlanarizedPoint;
 
 
 @end

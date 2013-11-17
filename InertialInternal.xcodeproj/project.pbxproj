@@ -13,8 +13,9 @@
 		9B2352251826FCC0001DE3B7 /* E20OrientationGraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2352241826FCC0001DE3B7 /* E20OrientationGraphView.m */; };
 		9B23522818273531001DE3B7 /* E20OrientationViewScrollSubClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B23522718273531001DE3B7 /* E20OrientationViewScrollSubClass.m */; };
 		9B23522B18284AC1001DE3B7 /* E201dDataPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B23522A18284AC1001DE3B7 /* E201dDataPoint.m */; };
-		9B23522E18286CE1001DE3B7 /* E20Matrix.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B23522D18286CE1001DE3B7 /* E20Matrix.m */; };
+		9B23522E18286CE1001DE3B7 /* E20Matrix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9B23522D18286CE1001DE3B7 /* E20Matrix.mm */; };
 		9B4377521820B9EE00D50E0B /* E20AccelGraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B4377511820B9EE00D50E0B /* E20AccelGraphView.m */; };
+		9B4562C41838547A004524D8 /* E20StepDetectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B4562C31838547A004524D8 /* E20StepDetectionViewController.m */; };
 		9BB99D6B182063930061D126 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BB99D6A182063930061D126 /* Foundation.framework */; };
 		9BB99D6D182063930061D126 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BB99D6C182063930061D126 /* CoreGraphics.framework */; };
 		9BB99D6F182063930061D126 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BB99D6E182063930061D126 /* UIKit.framework */; };
@@ -59,9 +60,11 @@
 		9B23522918284AC1001DE3B7 /* E201dDataPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E201dDataPoint.h; sourceTree = "<group>"; };
 		9B23522A18284AC1001DE3B7 /* E201dDataPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E201dDataPoint.m; sourceTree = "<group>"; };
 		9B23522C18286CE1001DE3B7 /* E20Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20Matrix.h; sourceTree = "<group>"; };
-		9B23522D18286CE1001DE3B7 /* E20Matrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20Matrix.m; sourceTree = "<group>"; };
+		9B23522D18286CE1001DE3B7 /* E20Matrix.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = E20Matrix.mm; sourceTree = "<group>"; };
 		9B4377501820B9EE00D50E0B /* E20AccelGraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20AccelGraphView.h; sourceTree = "<group>"; };
 		9B4377511820B9EE00D50E0B /* E20AccelGraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20AccelGraphView.m; sourceTree = "<group>"; };
+		9B4562C21838547A004524D8 /* E20StepDetectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20StepDetectionViewController.h; sourceTree = "<group>"; };
+		9B4562C31838547A004524D8 /* E20StepDetectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20StepDetectionViewController.m; sourceTree = "<group>"; };
 		9BB99D67182063930061D126 /* InertialInternal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InertialInternal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BB99D6A182063930061D126 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9BB99D6C182063930061D126 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -125,7 +128,7 @@
 				9B23522918284AC1001DE3B7 /* E201dDataPoint.h */,
 				9B23522A18284AC1001DE3B7 /* E201dDataPoint.m */,
 				9B23522C18286CE1001DE3B7 /* E20Matrix.h */,
-				9B23522D18286CE1001DE3B7 /* E20Matrix.m */,
+				9B23522D18286CE1001DE3B7 /* E20Matrix.mm */,
 			);
 			name = SensorManipulation;
 			sourceTree = "<group>";
@@ -206,6 +209,8 @@
 		9BB99DA7182074F80061D126 /* StoryBoard */ = {
 			isa = PBXGroup;
 			children = (
+				9B4562C21838547A004524D8 /* E20StepDetectionViewController.h */,
+				9B4562C31838547A004524D8 /* E20StepDetectionViewController.m */,
 				9B4377501820B9EE00D50E0B /* E20AccelGraphView.h */,
 				9B4377511820B9EE00D50E0B /* E20AccelGraphView.m */,
 				9BB99DA2182064820061D126 /* E20ContentViewController.m */,
@@ -325,7 +330,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9B23522E18286CE1001DE3B7 /* E20Matrix.m in Sources */,
+				9B23522E18286CE1001DE3B7 /* E20Matrix.mm in Sources */,
+				9B4562C41838547A004524D8 /* E20StepDetectionViewController.m in Sources */,
 				9BB99D81182063930061D126 /* E20ViewController.m in Sources */,
 				9BB99D7B182063930061D126 /* E20AppDelegate.m in Sources */,
 				9BB99DAA182075490061D126 /* E20RecordViewScrollSubClass.m in Sources */,
