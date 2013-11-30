@@ -68,6 +68,35 @@
     }
 }
 
+-(E203dDataPoint*) multiplyByScalar:(double) scalar{
+    E203dDataPoint* newPoint = [[E203dDataPoint alloc] init];
+    newPoint.timeStamp = self.timeStamp;
+    newPoint.x = self.x*scalar;
+    newPoint.y = self.y*scalar;
+    newPoint.z = self.z*scalar;
+    return newPoint;
+}
+
+-(E203dDataPoint*) addByDataPoint:(E203dDataPoint*) secondPoint{
+    E203dDataPoint* newPoint = [[E203dDataPoint alloc] init];
+    newPoint.timeStamp=self.timeStamp;
+    newPoint.x = self.x+secondPoint.x;
+    newPoint.y = self.y+secondPoint.y;
+    newPoint.z = self.z+secondPoint.z;
+    return newPoint;
+}
+
+-(E201dDataPoint*) convert3Dto1DByTakingMagnitude{
+    E201dDataPoint* newPoint = [[E201dDataPoint alloc] init];
+    newPoint.timeStamp = self.timeStamp;
+    E203dDataPoint* dataPoint = self;
+    double sum = pow(dataPoint.x,2)+pow(dataPoint.y,2)+pow(dataPoint.z,2);
+    sum = pow(sum,0.5);
+
+    newPoint.value = sum;
+    return newPoint;
+}
+
 -(double) getValueOf:(int) index{
     if (index==0) {
         return self.x;

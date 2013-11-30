@@ -41,6 +41,10 @@
     return dataPoint;
 }
 
+-(double) getValue{
+    return [self value];
+}
+
 
 
 @end

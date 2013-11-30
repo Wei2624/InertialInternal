@@ -17,6 +17,7 @@
 
 +(E201dDataPoint*) dataPointFromDouble:(double) value;
 +(E201dDataPoint*) copyDataPoint:(E201dDataPoint *) sourcePoint;
+-(double) getValue;
 
 
 @end

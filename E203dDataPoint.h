@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "E201dDataPoint.h"
 
 @interface E203dDataPoint : NSObject
 @property    double x;
@@ -22,8 +23,10 @@
 +(E203dDataPoint*) copyDataPoint:(E203dDataPoint *) sourcePoint;
 -(void) normalizeDataPoint; //normalized dataPoint x,y,z values
 -(double) dotProductWith:(E203dDataPoint*) secondPoint;
+-(E203dDataPoint*) multiplyByScalar:(double) scalar;
+-(E203dDataPoint*) addByDataPoint:(E203dDataPoint*) secondPoint;
 +(int) indexOfMaxAbsValueOfDataPoint:(E203dDataPoint *) dataPoint; //returns index (0,1,2) depending on whether x,y,or z is greatest in magnitude
-
+-(E201dDataPoint*) convert3Dto1DByTakingMagnitude;
 -(double) getValueOf:(int) index;
 
 @end

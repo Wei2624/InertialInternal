@@ -146,11 +146,15 @@
     {
         [self performSegueWithIdentifier:@"segue1" sender:self];
     }
+    if (indexPath.row == 1)
+    {
+        [self performSegueWithIdentifier:@"segue2" sender:self];
+    }
     if (indexPath.row == 2)
     {
         [self performSegueWithIdentifier:@"segue3" sender:self];
     }
-    if (indexPath.row == 4)
+    if (indexPath.row == 3)
     {
         [self performSegueWithIdentifier:@"segue4" sender:self];
     }

@@ -25,6 +25,8 @@
 @property (retain,nonatomic) NSMutableArray* gravFiltered;
 @property (retain,nonatomic) NSMutableArray* accelRaw;
 @property (retain,nonatomic) NSMutableArray* accelFiltered;
+@property (retain,nonatomic) NSMutableArray* accelKeySensorRaw;
+@property (retain,nonatomic) NSMutableArray* accelKeySensorFiltered;
 
 + (void)set3dRawAndFilteredValueWithInput:(NSMutableArray *) sensorHistory withFilterParam:(NSArray*) filterParam forRawData:(NSMutableArray *) rawData forFilteredData:(NSMutableArray *) filteredData; //sycnhronizing raw and filtered values for 3d datapoints
 
@@ -33,22 +35,29 @@
 + (E201dDataPoint*)getGyroPlanarizedForGrav: (NSMutableArray *) gravHistory ForGyro: (NSMutableArray *) gyroHistory; //returns a 1dDataPoint
                 //using the last gyro and gravity measurements
 
++ (E201dDataPoint*)getAccelPlanarizedForGrav: (NSMutableArray *) gravHistory ForAccel: (NSMutableArray *) accelHistory; //returns a 1dDataPoint
+//using the last accel and gravity measurements representing the magnitude of accel in the plane
+
 
 +(int) getPhoneOrientationWithRespectToGravity:(NSMutableArray*) gravHistory;
 
 +(E201dDataPoint*) updateGyroWhittaker:(NSMutableArray*)gyroWhittaker WithParam: (NSArray*) whittakerParam forGyroPlanarizedRaw: (NSMutableArray*) gyroPlanarizedRaw forGyroPlanarizedFiltered: (NSMutableArray*) gyroPlanarizedFiltered;
 
-+(bool) updateStepsDetectedUsingRawAccel: (NSMutableArray*) accelRaw filteredAccel: (NSMutableArray*) accelFiltered rawGyro:(NSMutableArray*) gyroRaw filteredGyro: (NSMutableArray*) gyroFiltered withKeyIndex: (int) keyIndex andStepParam:(NSArray*) stepParam;
++(bool) updateStepsDetectedUsingKeyAccelRaw: (NSMutableArray*) accelKeyInfoRaw keyAccelFiltered: (NSMutableArray*) accelKeyInfoFiltered rawAcceleration:(NSMutableArray*) accelRaw andStepParam:(NSArray*) stepParam;
 
-+(void) updateCurrentStepData:(NSMutableArray*) currStepData withAccel: (NSMutableArray*) accelFiltered andGyro: (NSMutableArray*) gyroFiltered;
++(void) updateCurrentStepData:(NSMutableArray*) currStepData withKeySensor: accelKeyInfoFiltered;
 
 +(void) normalizeCurrentStepData: (NSMutableArray*) currStepData;
 
-+(NSMutableArray*) magnitudeCurrentStepData: (NSMutableArray*) currStepData;
++(NSMutableArray*) unbiasCurrentStepData: (NSMutableArray*) currStepData withAvg: (double) avg;
 
-+(NSMutableArray*) avgCurrentStepData: (NSMutableArray*) currStepData;
++(double) magnitudeCurrentStepData: (NSMutableArray*) currStepData;
 
-+(NSMutableArray*) varianceCurrentStepData: (NSMutableArray*) currStepData withAvg: (NSMutableArray*) avg ;
++(double) avgCurrentStepData: (NSMutableArray*) currStepData;
+
++(double) maxCurrentStepData: (NSMutableArray*) currStepData;
+
++(double) varianceCurrentStepData: (NSMutableArray*) currStepData withAvg: (double) avg ;
 
 
 

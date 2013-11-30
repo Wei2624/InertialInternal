@@ -25,7 +25,8 @@
 @synthesize gyroPlanarizedRaw;
 @synthesize gyroPlanarizedFiltered;
 @synthesize gyroWhittaker;
-
+@synthesize accelKeySensorRaw;
+@synthesize accelKeySensorFiltered;
 
 -(id) init
 {
@@ -40,6 +41,8 @@
         gyroPlanarizedRaw = [[NSMutableArray alloc] init];
         gyroPlanarizedFiltered = [[NSMutableArray alloc] init];
         gyroWhittaker = [[NSMutableArray alloc] init];
+        accelKeySensorRaw = [[NSMutableArray alloc] init];
+        accelKeySensorFiltered = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -149,6 +152,18 @@
 
 }
 
++ (E201dDataPoint*)getAccelPlanarizedForGrav: (NSMutableArray *) gravHistory ForAccel: (NSMutableArray *) accelHistory{
+    E203dDataPoint* axis = [gravHistory objectAtIndex:[gravHistory count]-1];
+    [axis normalizeDataPoint];
+    [axis normalizeDataPoint];
+    E203dDataPoint* accelPoint = [accelHistory objectAtIndex:[accelHistory count]-1];
+    double projection = [accelPoint dotProductWith:axis];
+    E203dDataPoint* accelPlanarized = [accelPoint addByDataPoint:[axis multiplyByScalar:-projection]];
+    
+    return [accelPlanarized convert3Dto1DByTakingMagnitude];
+
+}
+
 +(int) getPhoneOrientationWithRespectToGravity:(NSMutableArray*) gravHistory{
     /*explained in header file*/
     E203dDataPoint* dataPoint = [gravHistory objectAtIndex:[gravHistory count]-1];
@@ -221,13 +236,24 @@
     return [E201dDataPoint copyDataPoint:gyroWhittakerPoint];
 }
 
-+(bool) updateStepsDetectedUsingRawAccel: (NSMutableArray*) accelRaw filteredAccel: (NSMutableArray*) accelFiltered rawGyro:(NSMutableArray*) gyroRaw filteredGyro: (NSMutableArray*) gyroFiltered withKeyIndex: (int) keyIndex andStepParam:(NSArray*) stepParam{
-        /*put description here*/
-    double diffPrev = [[accelFiltered objectAtIndex:2] getValueOf:keyIndex]- [[accelFiltered objectAtIndex:1] getValueOf:keyIndex];
-    double diffCurr = [[accelFiltered objectAtIndex:1] getValueOf:keyIndex]- [[accelFiltered objectAtIndex:0] getValueOf:keyIndex];
++(bool) updateStepsDetectedUsingKeyAccelRaw: (NSMutableArray*) accelKeyInfoRaw keyAccelFiltered: (NSMutableArray*) accelKeyInfoFiltered rawAcceleration:(NSMutableArray*) accelRaw andStepParam:(NSArray*) stepParam{
+        /*decides whether step was taken based on purely in plane acceleration information
+         stepParam is formatted as such lagtime,max_min,max_max,mag_min,mag_max,var_min,var_max*/
+    E201dDataPoint* keyInfoPoint2 = [accelKeyInfoFiltered objectAtIndex:2];
+    E201dDataPoint* keyInfoPoint1 = [accelKeyInfoFiltered objectAtIndex:1];
+    E201dDataPoint* keyInfoPoint0 = [accelKeyInfoFiltered objectAtIndex:0];
+    double diffPrev = keyInfoPoint2.value - keyInfoPoint1.value;
+    double diffCurr = keyInfoPoint1.value - keyInfoPoint0.value;
+    int orient = [E20SensorInfo getPhoneOrientationWithRespectToGravity:accelRaw];
     static int derivBefore = copysign(1,diffPrev);
     static int signChange =0;
-    static int lagTime = [[stepParam objectAtIndex:0] intValue];
+    static int lagTime = [[stepParam objectAtIndex:0] intValue];//get right value
+    double max_min = [[stepParam objectAtIndex:1] doubleValue];
+    double max_max = [[stepParam objectAtIndex:2] doubleValue];
+    double mag_min = [[stepParam objectAtIndex:3] doubleValue];
+    double mag_max = [[stepParam objectAtIndex:4] doubleValue];
+    double var_min = [[stepParam objectAtIndex:5] doubleValue];
+    double var_max = [[stepParam objectAtIndex:6] doubleValue];
     static NSMutableArray* currStepData = [[NSMutableArray alloc] init];
 
     int derivNow = copysign(1,diffCurr);
@@ -236,87 +262,105 @@
     }
     else{
         lagTime--;
-        [E20SensorInfo updateCurrentStepData:currStepData withAccel:accelFiltered andGyro:gyroFiltered];
+        [E20SensorInfo updateCurrentStepData:currStepData withKeySensor: accelKeyInfoFiltered];
     }
+    derivBefore = derivNow;
+    bool step=NO;
     if(signChange>=2){
         if(lagTime<1){
-            NSMutableArray* magnitudeCurrentStepData = [E20SensorInfo magnitudeCurrentStepData:currStepData];
-            [E20SensorInfo normalizeCurrentStepData:currStepData];
-            NSMutableArray* avgCurrentStepData = [E20SensorInfo avgCurrentStepData:currStepData];
-            NSMutableArray* varCurrentStepData = [E20SensorInfo varianceCurrentStepData:currStepData withAvg:avgCurrentStepData];
-         
-            
+            double avgCurrentStepData = [E20SensorInfo avgCurrentStepData:currStepData];
+            currStepData = [E20SensorInfo unbiasCurrentStepData:currStepData withAvg:avgCurrentStepData]; //removes dc offset
+            double magCurrentStepData = [E20SensorInfo magnitudeCurrentStepData:currStepData];
+            double varCurrentStepData = [E20SensorInfo varianceCurrentStepData:currStepData withAvg:0]; //unbiased avg is zero
+            double maxCurrentStepData = [E20SensorInfo maxCurrentStepData:currStepData];
+
+            if(maxCurrentStepData >=max_min && maxCurrentStepData <=max_max){
+                    if(magCurrentStepData >=mag_min && magCurrentStepData <=mag_max){
+                            if(varCurrentStepData >=var_min && varCurrentStepData <=var_max){
+                                step=YES;
+                            }
+                    }
+            }
+            currStepData = [[NSMutableArray alloc] init];
+            lagTime = [[stepParam objectAtIndex:0] intValue];//get right value
         }
         signChange=0;
     }
-    return false;
+    return step;
 }
 
-+(void) updateCurrentStepData:(NSMutableArray*) currStepData withAccel: (NSMutableArray*) accelFiltered andGyro: (NSMutableArray*) gyroFiltered{
++(void) updateCurrentStepData:(NSMutableArray*) currStepData withKeySensor: accelKeyInfoFiltered{
     /*loads currStepData with current filtered sensor readings, uses this to measure variance, magnitude, dot product of step*/
-    NSArray* nsArray = [NSArray arrayWithObjects:[NSNumber numberWithDouble:[[accelFiltered objectAtIndex:0] getValueOf:0]],
-                       [NSNumber numberWithDouble:[[accelFiltered objectAtIndex:0] getValueOf:1]],
-                       [NSNumber numberWithDouble:[[accelFiltered objectAtIndex:0] getValueOf:2]],
-                       [NSNumber numberWithDouble:[[gyroFiltered objectAtIndex:0] getValueOf:0]],
-                       [NSNumber numberWithDouble:[[gyroFiltered objectAtIndex:0] getValueOf:1]],
-                       [NSNumber numberWithDouble:[[gyroFiltered objectAtIndex:0] getValueOf:2]],
-                        nil];
-    [currStepData addObject:nsArray];
+    NSNumber* newStepData = [NSNumber numberWithDouble:[[accelKeyInfoFiltered objectAtIndex:0] getValue]];
+    [currStepData addObject:newStepData];
     
 }
 
-+(NSMutableArray*) magnitudeCurrentStepData: (NSMutableArray*) currStepData{
++(double) magnitudeCurrentStepData: (NSMutableArray*) currStepData{
     /*calculate magnitude of current step data*/
-    double mag[] = {0,0,0,0,0,0};
+    double mag = 0;
     for (int i=0; i<[currStepData count]; i++) {
-        NSArray* nsArray = [currStepData objectAtIndex:i];
-        for(int j=0;j<6;j++){
-            mag[j]+= pow([[nsArray objectAtIndex:j] doubleValue],2);
-        }
-    }
-    NSMutableArray * nsMag = [[NSMutableArray alloc] init];
-    for(int i=0;i<6;i++){
-        NSNumber* value = [NSNumber numberWithDouble:mag[i]];
-        [nsMag addObject:value];
+        double temp = [[currStepData objectAtIndex:i] doubleValue];
+        mag+= pow(temp,2);
+
     }
     
-    return nsMag;
+    return pow(mag,0.5);
 }
-
-+(NSMutableArray*) avgCurrentStepData: (NSMutableArray*) currStepData{
++(double) maxCurrentStepData: (NSMutableArray*) currStepData{
+    double max = -INFINITY;
+    for (int i=0; i<[currStepData count]; i++) {
+        double temp = ABS([[currStepData objectAtIndex:i] doubleValue]);
+        if (temp>max) {
+            max = temp;
+        }
+    }
+    return max;
+}
++(double) avgCurrentStepData: (NSMutableArray*) currStepData{
     /*calculate average of current step data*/
-    double avg[] = {0,0,0,0,0,0};
+    double avg = 0;
     for (int i=0; i<[currStepData count]; i++) {
-        NSArray* nsArray = [currStepData objectAtIndex:i];
-        for(int j=0;j<6;j++){
-            avg[j]+= [[nsArray objectAtIndex:j] doubleValue];
-        }
+        double temp = [[currStepData objectAtIndex:i] doubleValue];
+        avg+= temp;
     }
-    NSMutableArray * nsAvg = [[NSMutableArray alloc] init];
-    for(int i=0;i<6;i++){
-        NSNumber* value = [NSNumber numberWithDouble:avg[i]/(double)[currStepData count]];
-        [nsAvg addObject:value];
+    if([currStepData count]>0){
+        avg = avg/(double)[currStepData count];
+        return avg;
     }
-    
-    return nsAvg;
+    else{
+        return 0;
+    }
 }
 
-+(NSMutableArray*) varianceCurrentStepData: (NSMutableArray*) currStepData withAvg: (NSMutableArray*) avg ;{
-    /*calculate variance of current step data*/
-    double var[] = {0,0,0,0,0,0};
++(NSMutableArray*) unbiasCurrentStepData: (NSMutableArray*) currStepData withAvg: (double) avg{
+    //removes dc offset of currstep data such that after avg will be zero
+    NSMutableArray* newStepData = [[NSMutableArray alloc] init];
     for (int i=0; i<[currStepData count]; i++) {
-        NSArray* nsArray = [currStepData objectAtIndex:i];
-        for(int j=0;j<6;j++){
-            var[j]+= pow([[nsArray objectAtIndex:j] doubleValue]-[[avg objectAtIndex:j] doubleValue],2);
-        }
+        NSNumber* temp = [currStepData objectAtIndex:i];
+        double tempValue = [temp doubleValue];
+        tempValue = tempValue- avg;
+        temp = [NSNumber numberWithDouble:tempValue];
+        [newStepData addObject:temp];
     }
-    NSMutableArray * nsVar = [[NSMutableArray alloc] init];
-    for(int i=0;i<6;i++){
-        NSNumber* value = [NSNumber numberWithDouble:var[i]/(double)[currStepData count]];
-        [nsVar addObject:value];
+    return newStepData;
+}
+
++(double) varianceCurrentStepData: (NSMutableArray*) currStepData withAvg: (double) avg ;{
+    /*calculate variance of current step data*/
+    double var = 0;
+    for (int i=0; i<[currStepData count]; i++) {
+        double temp = [[currStepData objectAtIndex:i] doubleValue];
+        var+= pow(temp-avg,2);
     }
     
-    return nsVar;
+    if([currStepData count]>0){
+        var = var/(double)[currStepData count];
+        return var;
+    }
+    else{
+        return 0;
+    }
 }
 
 

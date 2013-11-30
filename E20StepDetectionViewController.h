@@ -18,6 +18,7 @@
 @property (nonatomic,strong) NSMutableArray* gravHistory;
 @property (nonatomic,strong) NSMutableArray* accelHistory;
 @property (nonatomic,strong) NSMutableArray* gyroHistory;
+@property (nonatomic,strong) NSMutableArray* keySensorInfo;  //stores the accel info dot producted with gravity
 
 @property (retain, nonatomic) E20SensorInfo* sensorInfoData;  //stores all the filtered and manipulated data
 @property int StepsTotal;
