@@ -21,6 +21,16 @@
 
 -(id) initMatrixVectorWithRows: (int)rows andVectorData:(double *) inputData; //initializes elements to elements of vector data
 
+-(id) initMatrix2x1VectorWithX: (double) x andY:(double) y; //initializes elements to elements of vector data
 
-
+-(double) get2x2Det;
+-(E20Matrix*) get2x2Inverse;
+-(E20Matrix*) multiply2x2MatrixWith2x2: (E20Matrix*) matrix2;
+-(E20Matrix*) multiply2x2MatrixWith2x1: (E20Matrix*) matrix2;
+-(E20Matrix*) multiply2x1MatrixWithScalar: (double) scalar;
+-(E20Matrix*) subtract2x1MatrixWith2x1: (E20Matrix*) matrix2;
+-(E20Matrix*) add2x1MatrixWith2x1: (E20Matrix*) matrix2;
+-(double) get2x1VectorMagnitude;
+-(double) get2x1VectorDotProductWith:(E20Matrix*) matrix2;
+-(E20Matrix*) returnSelfCopy;
 @end

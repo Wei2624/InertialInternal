@@ -198,7 +198,7 @@
         E201dDataPoint* gyroPlanarizedFilteredPoint2 = [gyroPlanarizedFiltered objectAtIndex:(i+offset)];
         avgs += gyroPlanarizedFilteredPoint2.value-gyroPlanarizedFilteredPoint1.value;
     }
-    avgs = avgs/filterLength;
+    avgs = avgs/filterLength*1e3;
     E201dDataPoint* gyroWhittakerPoint = [[E201dDataPoint alloc] init];
     if(ABS(avgs)>spikeThreshold || spikeLag>0){
         E201dDataPoint* gyroPlanarizedPoint = [gyroPlanarizedRaw objectAtIndex:0];

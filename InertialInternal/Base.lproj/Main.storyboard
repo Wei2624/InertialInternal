@@ -318,14 +318,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="0jD-WM-iLc" customClass="E20EatonScrollView">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" id="0jD-WM-iLc" customClass="E20EatonScrollView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" id="NWz-Un-eSl" customClass="E20EatonMapView">
-                                        <rect key="frame" x="80" y="142" width="160" height="284"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="800" height="1300"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
                             </scrollView>
@@ -333,6 +333,10 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="DCY-qF-dQg"/>
+                    <connections>
+                        <outlet property="eatonMapView" destination="NWz-Un-eSl" id="cJ8-5Q-are"/>
+                        <outlet property="scrollView" destination="0jD-WM-iLc" id="niT-tw-HKJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RwF-t5-TG7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

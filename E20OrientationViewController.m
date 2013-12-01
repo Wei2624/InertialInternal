@@ -125,8 +125,9 @@
                                         E201dDataPoint* gyroPlanarizedFilteredPoint = [sensorInfoData.gyroPlanarizedFiltered objectAtIndex:0];
                                         if (self.recordSensors==YES) {
                                             [orientationView.csvOutput2 appendFormat:@"\n%f,%1.2f,%1.2f,%1.2f",gyroPlanarizedRawPoint.timeStamp,gyroPlanarizedRawPoint.value,gyroPlanarizedFilteredPoint.value,gyroWhittakerPoint.value];
-                                            [orientationView updateOrientationVectorWithPlanarizedGyroPoint:[sensorInfoData.gyroWhittaker objectAtIndex:[sensorInfoData.gyroWhittaker count]-1]];
+                                            
                                         }
+                                        [orientationView updateOrientationVectorWithPlanarizedGyroPoint:[sensorInfoData.gyroWhittaker objectAtIndex:[sensorInfoData.gyroWhittaker count]-1]];
                                     }
 
                                 }
