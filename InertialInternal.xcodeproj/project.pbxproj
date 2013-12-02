@@ -21,6 +21,9 @@
 		9B3C331A184A8563000ADF76 /* E20MapLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B3C3319184A8563000ADF76 /* E20MapLine.m */; };
 		9B3C331D184AC12D000ADF76 /* E20MapInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B3C331C184AC12D000ADF76 /* E20MapInfo.m */; };
 		9B3C3320184B7A68000ADF76 /* E20UserPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B3C331F184B7A68000ADF76 /* E20UserPosition.m */; };
+		9B3C3323184BE29F000ADF76 /* E20EatonUserTrackingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B3C3322184BE29F000ADF76 /* E20EatonUserTrackingViewController.m */; };
+		9B3C3327184BE2EF000ADF76 /* E20EatonTrackingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B3C3326184BE2EF000ADF76 /* E20EatonTrackingScrollView.m */; };
+		9B3C332A184BE362000ADF76 /* E20EatonTrackingMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B3C3329184BE362000ADF76 /* E20EatonTrackingMapView.m */; };
 		9B4377521820B9EE00D50E0B /* E20AccelGraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B4377511820B9EE00D50E0B /* E20AccelGraphView.m */; };
 		9B4562C41838547A004524D8 /* E20StepDetectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B4562C31838547A004524D8 /* E20StepDetectionViewController.m */; };
 		9BB99D6B182063930061D126 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BB99D6A182063930061D126 /* Foundation.framework */; };
@@ -82,6 +85,12 @@
 		9B3C331C184AC12D000ADF76 /* E20MapInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20MapInfo.m; sourceTree = "<group>"; };
 		9B3C331E184B7A68000ADF76 /* E20UserPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20UserPosition.h; sourceTree = "<group>"; };
 		9B3C331F184B7A68000ADF76 /* E20UserPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20UserPosition.m; sourceTree = "<group>"; };
+		9B3C3321184BE29F000ADF76 /* E20EatonUserTrackingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20EatonUserTrackingViewController.h; sourceTree = "<group>"; };
+		9B3C3322184BE29F000ADF76 /* E20EatonUserTrackingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20EatonUserTrackingViewController.m; sourceTree = "<group>"; };
+		9B3C3325184BE2EF000ADF76 /* E20EatonTrackingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20EatonTrackingScrollView.h; sourceTree = "<group>"; };
+		9B3C3326184BE2EF000ADF76 /* E20EatonTrackingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20EatonTrackingScrollView.m; sourceTree = "<group>"; };
+		9B3C3328184BE362000ADF76 /* E20EatonTrackingMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20EatonTrackingMapView.h; sourceTree = "<group>"; };
+		9B3C3329184BE362000ADF76 /* E20EatonTrackingMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20EatonTrackingMapView.m; sourceTree = "<group>"; };
 		9B4377501820B9EE00D50E0B /* E20AccelGraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20AccelGraphView.h; sourceTree = "<group>"; };
 		9B4377511820B9EE00D50E0B /* E20AccelGraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20AccelGraphView.m; sourceTree = "<group>"; };
 		9B4562C21838547A004524D8 /* E20StepDetectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20StepDetectionViewController.h; sourceTree = "<group>"; };
@@ -228,6 +237,19 @@
 			name = MapManipulation;
 			sourceTree = "<group>";
 		};
+		9B3C3324184BE2A7000ADF76 /* EatonTrackingUsers */ = {
+			isa = PBXGroup;
+			children = (
+				9B3C3321184BE29F000ADF76 /* E20EatonUserTrackingViewController.h */,
+				9B3C3322184BE29F000ADF76 /* E20EatonUserTrackingViewController.m */,
+				9B3C3325184BE2EF000ADF76 /* E20EatonTrackingScrollView.h */,
+				9B3C3326184BE2EF000ADF76 /* E20EatonTrackingScrollView.m */,
+				9B3C3328184BE362000ADF76 /* E20EatonTrackingMapView.h */,
+				9B3C3329184BE362000ADF76 /* E20EatonTrackingMapView.m */,
+			);
+			name = EatonTrackingUsers;
+			sourceTree = "<group>";
+		};
 		9BB99D5E182063930061D126 = {
 			isa = PBXGroup;
 			children = (
@@ -309,6 +331,7 @@
 				9B3C3310184A7483000ADF76 /* Record Data */,
 				9B3C3311184A749E000ADF76 /* ContentView */,
 				9BB99D7C182063930061D126 /* Main.storyboard */,
+				9B3C3324184BE2A7000ADF76 /* EatonTrackingUsers */,
 				9B3C3313184A74BD000ADF76 /* EatonCenter */,
 				9B3C3312184A74AE000ADF76 /* Orientation View */,
 			);
@@ -422,14 +445,17 @@
 				9BB99D7B182063930061D126 /* E20AppDelegate.m in Sources */,
 				9BB99DAA182075490061D126 /* E20RecordViewScrollSubClass.m in Sources */,
 				9B2352251826FCC0001DE3B7 /* E20OrientationGraphView.m in Sources */,
+				9B3C332A184BE362000ADF76 /* E20EatonTrackingMapView.m in Sources */,
 				9BB99DA3182064820061D126 /* E20ContentViewController.m in Sources */,
 				9B3C3305184A72ED000ADF76 /* E20EatonCenterViewController.m in Sources */,
 				9BB99DA6182065650061D126 /* E20ContentItem.m in Sources */,
 				9B3C3316184A826C000ADF76 /* E202dMapPoint.m in Sources */,
 				9B23522818273531001DE3B7 /* E20OrientationViewScrollSubClass.m in Sources */,
 				9B3C330E184A7422000ADF76 /* E20EatonMapView.m in Sources */,
+				9B3C3323184BE29F000ADF76 /* E20EatonUserTrackingViewController.m in Sources */,
 				9B3C331D184AC12D000ADF76 /* E20MapInfo.m in Sources */,
 				9B23521F1826CD94001DE3B7 /* E203dDataPoint.m in Sources */,
+				9B3C3327184BE2EF000ADF76 /* E20EatonTrackingScrollView.m in Sources */,
 				9BB99D77182063930061D126 /* main.m in Sources */,
 				9B4377521820B9EE00D50E0B /* E20AccelGraphView.m in Sources */,
 				9B23521B1826BCFC001DE3B7 /* E20SensorInfo.mm in Sources */,

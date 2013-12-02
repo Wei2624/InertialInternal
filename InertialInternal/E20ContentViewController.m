@@ -30,6 +30,9 @@
     E20ContentItem *item4 = [[E20ContentItem alloc] init];
     item4.itemName = @"Step Detection";
     [self.contentItems addObject:item4];
+    E20ContentItem *item5 = [[E20ContentItem alloc] init];
+    item5.itemName = @"Eaton User Tracking";
+    [self.contentItems addObject:item5];
 
 }
 
@@ -157,6 +160,10 @@
     if (indexPath.row == 3)
     {
         [self performSegueWithIdentifier:@"segue4" sender:self];
+    }
+    if (indexPath.row == 4)
+    {
+        [self performSegueWithIdentifier:@"segue5" sender:self];
     }
 }
 

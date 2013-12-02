@@ -17,6 +17,8 @@
         self.orientation = orientation.returnSelfCopy;
         self.currentArea = area;
         self.weight = 100;
+        self.updateOrder = ( (arc4random() % (3-0+1)) + 0 );
+        self.numTimesUpdated = 0;
     }
     return self;
     
@@ -31,6 +33,8 @@
         self.orientation = [[E20Matrix alloc] initMatrix2x1VectorWithX:xOrient andY:yOrient];
         self.currentArea = area;
         self.weight = 100;
+        self.updateOrder = ( (arc4random() % (3-0+1)) + 0 );
+        self.numTimesUpdated=0;
     }
     return self;
 }
@@ -41,30 +45,33 @@
     double** data2 =self.orientation.data;
     data[0][0] += data2[0][0]*5;
     data[1][0] += data2[1][0]*5;
-    if(![self isUserInArea:[mapAreas objectForKey:self.currentArea]]){
-        NSMutableArray* mapYourIn = [self returnCurrentAreaInMap:mapAreas];
-        if(mapYourIn == nil){
-            self.position.position = savedPosition;
-            self.weight = self.weight/5;
-        }
-        else{
-            E20MapLine* closestLineToOldArea = [E20MapInfo closestLineOnMap:[mapAreas objectForKey:self.currentArea] toPointOutsideMap:self.position];
-            NSLog(@"%f , %f , %f , %f",closestLineToOldArea.startPosition.position.data[0][0],closestLineToOldArea.startPosition.position.data[0][1],closestLineToOldArea.startPosition.position.data[1][0],closestLineToOldArea.startPosition.position.data[1][1]);
-            if(!closestLineToOldArea.crossable && ![E20MapInfo isUserOrientation:self.orientation linedUpWithLine:closestLineToOldArea]){
+    if(1){
+        if(![self isUserInArea:[mapAreas objectForKey:self.currentArea]]){
+            NSMutableArray* mapYourIn = [self returnCurrentAreaInMap:mapAreas];
+            if(mapYourIn == nil){//
                 self.position.position = savedPosition;
+                self.weight = self.weight/5;
             }
-            else if([E20MapInfo isUserOrientation:self.orientation linedUpWithLine:closestLineToOldArea]){
-                self.orientation = [E20MapInfo snapOrientation:self.orientation toLine:closestLineToOldArea];
-                self.position.position = savedPosition;
-                data =self.position.position.data;
-                data2 =self.orientation.data;
-                data[0][0] += data2[0][0]*5;
-                data[1][0] += data2[1][0]*5;
-                self.weight=self.weight/2;
-                
-            }
-            else {
-                self.currentArea = [self returnKeyForMap:mapYourIn forMapDict:mapAreas];
+            else{
+                E20MapLine* closestLineToOldArea = [E20MapInfo closestLineOnMap:[mapAreas objectForKey:self.currentArea] toPointOutsideMap:self.position];
+                NSLog(@"%f , %f , %f , %f",closestLineToOldArea.startPosition.position.data[0][0],closestLineToOldArea.startPosition.position.data[0][1],closestLineToOldArea.startPosition.position.data[1][0],closestLineToOldArea.startPosition.position.data[1][1]);
+                if(!closestLineToOldArea.crossable && ![E20MapInfo isUserOrientation:self.orientation linedUpWithLine:closestLineToOldArea]){
+                    self.position.position = savedPosition;
+                    self.weight = self.weight/3;
+                }
+                else if([E20MapInfo isUserOrientation:self.orientation linedUpWithLine:closestLineToOldArea]){
+                    self.orientation = [E20MapInfo snapOrientation:self.orientation toLine:closestLineToOldArea];
+                    self.position.position = savedPosition;
+                    data =self.position.position.data;
+                    data2 =self.orientation.data;
+                    data[0][0] += data2[0][0]*5;
+                    data[1][0] += data2[1][0]*5;
+                    self.weight=self.weight/2;
+                    
+                }
+                else {
+                    self.currentArea = [self returnKeyForMap:mapYourIn forMapDict:mapAreas];
+                }
             }
         }
     }
@@ -85,14 +92,13 @@
 }
 
 -(NSMutableArray*) returnCurrentAreaInMap: (NSMutableDictionary*) mapAreas{
-    NSMutableArray* area;
     for(id key in mapAreas) {
         NSMutableArray* temp = [mapAreas objectForKey:key];
         if([E20MapInfo isPoint:self.position InsideMapArea:temp]){
-            area = temp;
+            return temp;
         }
     }
-    return area;
+    return nil;
 }
 
 -(void) updateOrientationVectorWithPlanarizedGyroPoint:(E201dDataPoint *) gyroPlanarizedPoint{

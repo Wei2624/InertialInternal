@@ -157,13 +157,14 @@
                                             step = [E20SensorInfo updateStepsDetectedUsingKeyAccelRaw:sensorInfoData.accelKeySensorRaw keyAccelFiltered:sensorInfoData.accelKeySensorFiltered rawAcceleration:sensorInfoData.accelRaw andStepParam:stepsParam2];
                                         }
                                         
-                                        [eatonMapView.user1 updateOrientationVectorWithPlanarizedGyroPoint:[sensorInfoData.gyroWhittaker objectAtIndex:[sensorInfoData.gyroWhittaker count]-1]];
-                                        
+                                        [eatonMapView updateAllUsersOrientationOrientationVectorWithPlanarizedGyroPoint:[sensorInfoData.gyroWhittaker objectAtIndex:[sensorInfoData.gyroWhittaker count]-1]];
                                         if(step == YES){
-                                            [eatonMapView.user1 updatePositionForArea:eatonMapView.eatonAreas];
+                                            [eatonMapView updatePositionForAllUsers];
                                             [eatonMapView setNeedsDisplay];
                                         }
-                                        //update oreitnation
+                                        if(_recordUsersData){
+                                            [eatonMapView updateRecording];
+                                        }
                                     }
                                     
                                 }
@@ -207,6 +208,10 @@
                                 if([eatonMapView.gyroPlanarizedHistory count]>filterLength){
                                     [eatonMapView.gyroPlanarizedHistory removeObjectAtIndex:0];
                                 }
+                            }
+                            _iterationUpdatePosition++;
+                            if(_iterationUpdatePosition%100==0){
+                                
                             }
                             prevTime = currTime;
                         }
@@ -271,7 +276,8 @@
     [self loadData];
     self.eatonMapView.canDraw = YES;
     [eatonMapView setNeedsDisplay];
-    eatonMapView.user1 =[[E20UserPosition alloc] initWithPositionX:200 positionY:160 withOrientationAngle:90 currentArea:[NSString stringWithFormat:@"area%d.csv",0]];
+    eatonMapView.users = [[NSMutableArray alloc] init];
+    [eatonMapView initUsersCenteredAtX:420 andY:400 andOrientationAngle:90];
     [eatonMapView setGravHistory:[[NSMutableArray alloc] init]];
     [eatonMapView setGyroHistory:[[NSMutableArray alloc] init]];
     [eatonMapView setAccelHistory:[[NSMutableArray alloc] init]];
@@ -281,7 +287,11 @@
     [eatonMapView setKeySensorInfo:[[NSMutableArray alloc] init]];
     [self setSensorInfoData:[[E20SensorInfo alloc] init]];
     [self startMotionTracking];
-
+    _iterationUpdatePosition = 0;
+    _recordUsersData = YES;
+    if(_recordUsersData){
+        eatonMapView.csvOutput = [NSMutableString stringWithString:@"User1x,User1y,User1weight,User2x,User2y,User2weight,User3x,User3y,User3weight,User4x,User4y,User4weight,User5x,User5y,User5weight,User6x,User6y,User6weight,User7x,User7y,User7weight,User8x,User8y,User8weight,User9x,User9y,User9weight,User10x,User10y,User10weight,User11x,User11y,User11weight,User12x,User12y,User12weight,User13x,User13y,User13weight,User14x,User14y,User14weight,User15x,User15y,User15weight"];
+    }
 
 	// Do any additional setup after loading the view.
 }
@@ -388,6 +398,33 @@
     }
     
 
+}
+
+- (IBAction)stopMotionTracking:(id)sender {
+    [self.motionManager stopDeviceMotionUpdates];
+    [self.motionManager stopAccelerometerUpdates];
+    [self.motionManager stopGyroUpdates];
+    if (_recordUsersData==YES) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,  NSUserDomainMask, YES);
+        NSString *documentsDirectoryPath = [paths objectAtIndex:0];
+        NSString *filePath= nil;
+
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+        
+        
+        filePath = [documentsDirectoryPath  stringByAppendingPathComponent:[NSString stringWithFormat:@"user4.csv"]];
+        NSData* settingsData;
+        settingsData = [eatonMapView.csvOutput dataUsingEncoding: NSASCIIStringEncoding];
+        
+        if ([settingsData writeToFile:filePath atomically:YES])
+            NSLog(@"writeok");
+        
+        
+    }
+
+    
 }
 
 @end

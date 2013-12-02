@@ -22,5 +22,6 @@
 +(bool) isUserOrientation: (E20Matrix*) orientation linedUpWithLine:(E20MapLine*) line;
 +(E20Matrix*) snapOrientation: (E20Matrix*) orientation toLine:(E20MapLine*) line;
 +(E20MapLine*) closestLineOnMap: (NSMutableArray*) mapArea toPointOutsideMap:(E202dMapPoint*) position;
++(NSString*) returnKeyFromUserPositionX: (double) x PositionY:(double) y mapDictionay: (NSMutableDictionary*) mapDict;
 
 @end

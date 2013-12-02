@@ -28,9 +28,14 @@
 @property (nonatomic,strong) NSMutableArray* keySensorInfo;  //stores the accel info dot producted with gravity
 
 
-
+@property NSMutableArray* users;
 @property E20UserPosition* user1;
 
+-(void) initUsersCenteredAtX:(double) x andY: (double) y andOrientationAngle: (double) angle;
+-(void) updateAllUsersOrientationOrientationVectorWithPlanarizedGyroPoint:(E201dDataPoint *) gyroPlanarizedPoint;
+-(void) updatePositionForAllUsers;
+-(void) updateRecording;
+@property (nonatomic,strong) NSMutableString* csvOutput;
 
 
 @end

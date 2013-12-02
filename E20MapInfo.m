@@ -142,5 +142,16 @@
     return vec1;
 }
 
++(NSString*) returnKeyFromUserPositionX: (double) x PositionY:(double) y mapDictionay: (NSMutableDictionary*) mapDict{
+    for(id key in mapDict) {
+        NSMutableArray* area = [mapDict objectForKey:key];
+        E202dMapPoint* mapPoint = [[E202dMapPoint alloc] initWithPositionX:x andPositionY:y];
+        if([E20MapInfo isPoint:mapPoint InsideMapArea:area]){
+            return key;
+        }
+    }
+    return nil;
+}
+
 @end
 
