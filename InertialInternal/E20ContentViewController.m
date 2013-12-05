@@ -33,6 +33,9 @@
     E20ContentItem *item5 = [[E20ContentItem alloc] init];
     item5.itemName = @"Eaton User Tracking";
     [self.contentItems addObject:item5];
+    E20ContentItem *item6 = [[E20ContentItem alloc] init];
+    item6.itemName = @"SickKids Map";
+    [self.contentItems addObject:item6];
 
 }
 
@@ -165,6 +168,11 @@
     {
         [self performSegueWithIdentifier:@"segue5" sender:self];
     }
+    if (indexPath.row == 5)
+    {
+        [self performSegueWithIdentifier:@"segue6" sender:self];
+    }
+
 }
 
 

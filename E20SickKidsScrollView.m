@@ -1,14 +1,14 @@
 //
-//  E20EatonTrackingScrollView.m
+//  E20SickKidsScrollView.m
 //  InertialInternal
 //
-//  Created by E-Twenty Janahan on 12/1/13.
+//  Created by E-Twenty Janahan on 12/5/13.
 //  Copyright (c) 2013 E-Twenty Dev. All rights reserved.
 //
 
-#import "E20EatonTrackingScrollView.h"
+#import "E20SickKidsScrollView.h"
 
-@implementation E20EatonTrackingScrollView
+@implementation E20SickKidsScrollView
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -18,8 +18,6 @@
     }
     return self;
 }
-
-
 
 /*
 // Only override drawRect: if you perform custom drawing.

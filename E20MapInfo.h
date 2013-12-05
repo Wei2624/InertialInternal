@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "E20MapLine.h"
+#import "E20MapArea.h"
 
 @interface E20MapInfo : NSObject
 

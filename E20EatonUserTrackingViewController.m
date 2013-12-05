@@ -14,6 +14,7 @@
 
 @implementation E20EatonUserTrackingViewController
 @synthesize eatonMapView;
+@synthesize scrollView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -23,6 +24,8 @@
     }
     return self;
 }
+
+
 
 -(void)startMotionTracking
 {
@@ -36,7 +39,7 @@
                         ^{
                             if(_iterator1 < [eatonMapView.user1History count]){
                                 NSString* theLine = [eatonMapView.user1History objectAtIndex:_iterator1];
-                                _iterator1+=4;
+                                _iterator1+=3;
                                 NSArray    *lineValues  = [theLine componentsSeparatedByString:@","];
                                 eatonMapView.user1 = [[NSMutableArray alloc] init];
                                 for(int i =0;i<[lineValues count];i+=3){
@@ -130,6 +133,15 @@
     [super viewDidLoad];
 	[self.scrollView setScrollEnabled:YES];
     [self.scrollView setContentSize:(CGSizeMake(800, 1300))];
+	scrollView.backgroundColor = [UIColor blackColor];
+	scrollView.delegate = self;
+    
+    scrollView.minimumZoomScale = 0.5;
+	scrollView.maximumZoomScale = 2.0;
+	[scrollView setZoomScale:1.0];
+    self.view = scrollView;
+
+
     [self loadData];
     _iterator1 = 0;
     _iterator2 = 0;
@@ -141,8 +153,39 @@
     [self loadRecordedUserPosition];
     [self startMotionTracking];
     
+    
 }
 
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
+    eatonMapView.frame = [self centeredFrameForScrollView:self.scrollView andUIView:eatonMapView];
+}
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+	return eatonMapView;
+}
+
+- (CGRect)centeredFrameForScrollView:(UIScrollView *)scroll andUIView:(UIView *)rView {
+	CGSize boundsSize = scroll.bounds.size;
+    CGRect frameToCenter = rView.frame;
+    
+    // center horizontally
+    if (frameToCenter.size.width < boundsSize.width) {
+        frameToCenter.origin.x = (boundsSize.width - frameToCenter.size.width) / 2;
+    }
+    else {
+        frameToCenter.origin.x = 0;
+    }
+    
+    // center vertically
+    if (frameToCenter.size.height < boundsSize.height) {
+        frameToCenter.origin.y = (boundsSize.height - frameToCenter.size.height) / 2;
+    }
+    else {
+        frameToCenter.origin.y = 0;
+    }
+	
+	return frameToCenter;
+}
 
 
 

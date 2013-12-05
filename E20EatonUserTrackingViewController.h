@@ -10,7 +10,7 @@
 #import "E20EatonTrackingScrollView.h"
 #import "E20EatonTrackingMapView.h"
 
-@interface E20EatonUserTrackingViewController : UIViewController
+@interface E20EatonUserTrackingViewController : UIViewController <UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet E20EatonTrackingScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet E20EatonTrackingMapView *eatonMapView;
 @property int iterator1;
@@ -20,6 +20,5 @@
 @property int iterator5;
 -(void) loadData;
 -(void) loadRecordedUserPosition;
--(void) displayUpdateMethod;
 -(void)startMotionTracking;
 @end

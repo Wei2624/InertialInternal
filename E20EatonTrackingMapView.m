@@ -81,6 +81,46 @@
             }
         }
         
+        //write text
+         CGContextSetRGBFillColor(contextRef, 1, 1, 0, 1.0);
+        CGContextSelectFont(contextRef, "Helvetica-Light", 10.0f,kCGEncodingMacRoman);
+        CGContextSetTextDrawingMode(contextRef, kCGTextFill);
+        CGAffineTransform trans = CGAffineTransformMakeScale(1, -1);
+        CGContextSetTextMatrix(contextRef, trans);
+        CGContextShowTextAtPoint(contextRef, 140, 175, "Blacks", strlen("Blacks"));
+        CGContextSelectFont(contextRef, "Helvetica-Light", 15.0f,kCGEncodingMacRoman);
+        CGContextShowTextAtPoint(contextRef, 30, 250, "Shoppers Drug Mart", strlen("Shoppers Drug Mart"));
+        CGContextSelectFont(contextRef, "Helvetica-Light", 13.0f,kCGEncodingMacRoman);
+        CGContextShowTextAtPoint(contextRef, 30, 410, "T-Booth Wireless", strlen("T-Booth Wireless"));
+        CGContextSelectFont(contextRef, "Helvetica-Light", 13.0f,kCGEncodingMacRoman);
+        CGContextShowTextAtPoint(contextRef, 30, 450, "SoftMoc", strlen("SoftMoc"));
+        CGContextSelectFont(contextRef, "Helvetica-Light", 15.0f,kCGEncodingMacRoman);
+        CGContextShowTextAtPoint(contextRef, 30, 500, "Toys Toys Toys", strlen("Toys Toys Toys"));
+        CGContextSelectFont(contextRef, "Helvetica-Light", 15.0f,kCGEncodingMacRoman);
+        CGContextShowTextAtPoint(contextRef, 50, 560, "Colcutta", strlen("Colcutta"));
+        CGContextSelectFont(contextRef, "Helvetica-Light", 15.0f,kCGEncodingMacRoman);
+        CGContextShowTextAtPoint(contextRef, 115, 600, "Nature", strlen("Nature"));
+        CGContextSelectFont(contextRef, "Helvetica-Light", 15.0f,kCGEncodingMacRoman);
+        CGContextShowTextAtPoint(contextRef, 115, 660, "Telus", strlen("Telus"));
+        CGContextSelectFont(contextRef, "Helvetica-Light", 15.0f,kCGEncodingMacRoman);
+        CGContextShowTextAtPoint(contextRef, 110, 720, "Calendar", strlen("Calendar"));
+        CGContextSelectFont(contextRef, "Helvetica-Light", 15.0f,kCGEncodingMacRoman);
+        CGContextShowTextAtPoint(contextRef, 115, 790, "Fido", strlen("Fido"));
+        CGContextSelectFont(contextRef, "Helvetica-Light", 15.0f,kCGEncodingMacRoman);
+        CGContextShowTextAtPoint(contextRef, 400, 800, "American Eagle", strlen("American Eagle"));
+        CGContextSelectFont(contextRef, "Helvetica-Light", 15.0f,kCGEncodingMacRoman);
+        CGContextShowTextAtPoint(contextRef, 400, 690, "HMV", strlen("HMV"));
+        CGContextSelectFont(contextRef, "Helvetica-Light", 15.0f,kCGEncodingMacRoman);
+        CGContextShowTextAtPoint(contextRef, 400, 600, "Children's Place", strlen("Children's Place"));
+        CGContextSelectFont(contextRef, "Helvetica-Light", 15.0f,kCGEncodingMacRoman);
+        CGContextShowTextAtPoint(contextRef, 400, 500, "Aerie", strlen("Aerie"));
+        CGContextSelectFont(contextRef, "Helvetica-Light", 15.0f,kCGEncodingMacRoman);
+        CGContextShowTextAtPoint(contextRef, 400, 415, "Rogers", strlen("Rogers"));
+        CGContextSelectFont(contextRef, "Helvetica-Light", 15.0f,kCGEncodingMacRoman);
+        CGContextShowTextAtPoint(contextRef, 400, 360, "Sona", strlen("Sona"));
+        CGContextSelectFont(contextRef, "Helvetica-Light", 15.0f,kCGEncodingMacRoman);
+        CGContextShowTextAtPoint(contextRef, 400, 240, "Rich Tree", strlen("Rich Tree"));
+
         
         
     }

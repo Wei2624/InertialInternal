@@ -44,6 +44,10 @@
 		9BB99DA3182064820061D126 /* E20ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB99DA2182064820061D126 /* E20ContentViewController.m */; };
 		9BB99DA6182065650061D126 /* E20ContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB99DA5182065650061D126 /* E20ContentItem.m */; };
 		9BB99DAA182075490061D126 /* E20RecordViewScrollSubClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB99DA9182075490061D126 /* E20RecordViewScrollSubClass.m */; };
+		9BFED2AD1850E752003F8701 /* E20SickKidsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BFED2AC1850E752003F8701 /* E20SickKidsViewController.m */; };
+		9BFED2B01850E781003F8701 /* E20SickKidsScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BFED2AF1850E781003F8701 /* E20SickKidsScrollView.m */; };
+		9BFED2B31850E797003F8701 /* E20SickKidsMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BFED2B21850E797003F8701 /* E20SickKidsMapView.m */; };
+		9BFED2B91850F4BC003F8701 /* E20MapArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BFED2B81850F4BC003F8701 /* E20MapArea.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +125,14 @@
 		9BB99DA5182065650061D126 /* E20ContentItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = E20ContentItem.m; path = InertialInternal/E20ContentItem.m; sourceTree = "<group>"; };
 		9BB99DA8182075490061D126 /* E20RecordViewScrollSubClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20RecordViewScrollSubClass.h; sourceTree = "<group>"; };
 		9BB99DA9182075490061D126 /* E20RecordViewScrollSubClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20RecordViewScrollSubClass.m; sourceTree = "<group>"; };
+		9BFED2AB1850E752003F8701 /* E20SickKidsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20SickKidsViewController.h; sourceTree = "<group>"; };
+		9BFED2AC1850E752003F8701 /* E20SickKidsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20SickKidsViewController.m; sourceTree = "<group>"; };
+		9BFED2AE1850E781003F8701 /* E20SickKidsScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20SickKidsScrollView.h; sourceTree = "<group>"; };
+		9BFED2AF1850E781003F8701 /* E20SickKidsScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20SickKidsScrollView.m; sourceTree = "<group>"; };
+		9BFED2B11850E797003F8701 /* E20SickKidsMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20SickKidsMapView.h; sourceTree = "<group>"; };
+		9BFED2B21850E797003F8701 /* E20SickKidsMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20SickKidsMapView.m; sourceTree = "<group>"; };
+		9BFED2B71850F4BC003F8701 /* E20MapArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E20MapArea.h; sourceTree = "<group>"; };
+		9BFED2B81850F4BC003F8701 /* E20MapArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E20MapArea.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,6 +241,8 @@
 				9B3C3315184A826C000ADF76 /* E202dMapPoint.m */,
 				9B3C3318184A8563000ADF76 /* E20MapLine.h */,
 				9B3C3319184A8563000ADF76 /* E20MapLine.m */,
+				9BFED2B71850F4BC003F8701 /* E20MapArea.h */,
+				9BFED2B81850F4BC003F8701 /* E20MapArea.m */,
 				9B3C331B184AC12D000ADF76 /* E20MapInfo.h */,
 				9B3C331C184AC12D000ADF76 /* E20MapInfo.m */,
 				9B3C331E184B7A68000ADF76 /* E20UserPosition.h */,
@@ -327,15 +341,29 @@
 		9BB99DA7182074F80061D126 /* StoryBoard */ = {
 			isa = PBXGroup;
 			children = (
+				9BB99D7C182063930061D126 /* Main.storyboard */,
 				9B3C330F184A743D000ADF76 /* StepDetect */,
 				9B3C3310184A7483000ADF76 /* Record Data */,
 				9B3C3311184A749E000ADF76 /* ContentView */,
-				9BB99D7C182063930061D126 /* Main.storyboard */,
+				9BFED2AA1850E723003F8701 /* SickKids Map */,
 				9B3C3324184BE2A7000ADF76 /* EatonTrackingUsers */,
 				9B3C3313184A74BD000ADF76 /* EatonCenter */,
 				9B3C3312184A74AE000ADF76 /* Orientation View */,
 			);
 			name = StoryBoard;
+			sourceTree = "<group>";
+		};
+		9BFED2AA1850E723003F8701 /* SickKids Map */ = {
+			isa = PBXGroup;
+			children = (
+				9BFED2AB1850E752003F8701 /* E20SickKidsViewController.h */,
+				9BFED2AC1850E752003F8701 /* E20SickKidsViewController.m */,
+				9BFED2AE1850E781003F8701 /* E20SickKidsScrollView.h */,
+				9BFED2AF1850E781003F8701 /* E20SickKidsScrollView.m */,
+				9BFED2B11850E797003F8701 /* E20SickKidsMapView.h */,
+				9BFED2B21850E797003F8701 /* E20SickKidsMapView.m */,
+			);
+			name = "SickKids Map";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -437,17 +465,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B23522E18286CE1001DE3B7 /* E20Matrix.mm in Sources */,
+				9BFED2AD1850E752003F8701 /* E20SickKidsViewController.m in Sources */,
 				9B4562C41838547A004524D8 /* E20StepDetectionViewController.m in Sources */,
 				9B3C3308184A7393000ADF76 /* E20EatonScrollView.m in Sources */,
 				9B3C3320184B7A68000ADF76 /* E20UserPosition.m in Sources */,
 				9BB99D81182063930061D126 /* E20ViewController.m in Sources */,
 				9B3C331A184A8563000ADF76 /* E20MapLine.m in Sources */,
 				9BB99D7B182063930061D126 /* E20AppDelegate.m in Sources */,
+				9BFED2B91850F4BC003F8701 /* E20MapArea.m in Sources */,
 				9BB99DAA182075490061D126 /* E20RecordViewScrollSubClass.m in Sources */,
 				9B2352251826FCC0001DE3B7 /* E20OrientationGraphView.m in Sources */,
 				9B3C332A184BE362000ADF76 /* E20EatonTrackingMapView.m in Sources */,
 				9BB99DA3182064820061D126 /* E20ContentViewController.m in Sources */,
+				9BFED2B31850E797003F8701 /* E20SickKidsMapView.m in Sources */,
 				9B3C3305184A72ED000ADF76 /* E20EatonCenterViewController.m in Sources */,
+				9BFED2B01850E781003F8701 /* E20SickKidsScrollView.m in Sources */,
 				9BB99DA6182065650061D126 /* E20ContentItem.m in Sources */,
 				9B3C3316184A826C000ADF76 /* E202dMapPoint.m in Sources */,
 				9B23522818273531001DE3B7 /* E20OrientationViewScrollSubClass.m in Sources */,

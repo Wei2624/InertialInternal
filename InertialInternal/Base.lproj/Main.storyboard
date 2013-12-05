@@ -43,6 +43,7 @@
                         <segue destination="7jU-Q1-usx" kind="push" identifier="segue4" id="qXl-aC-clH"/>
                         <segue destination="cGm-Fx-bO1" kind="push" identifier="segue2" id="Zsb-hw-raG"/>
                         <segue destination="PHN-B4-iyt" kind="push" identifier="segue5" id="lQx-wX-f5W"/>
+                        <segue destination="wAe-8p-vlt" kind="push" identifier="segue6" id="GJu-f6-5p0"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="guW-za-jdL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -124,7 +125,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VVa-of-XDM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1064" y="-872"/>
+            <point key="canvasLocation" x="1064" y="-1192"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="QYJ-K3-nGW">
@@ -211,7 +212,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="11h-o7-xxe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1093" y="788"/>
+            <point key="canvasLocation" x="1109" y="1416"/>
         </scene>
         <!--Step Detection View Controller - Step Detection-->
         <scene sceneID="wdU-ia-i8J">
@@ -309,7 +310,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="91I-5m-r6d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1344" y="49"/>
+            <point key="canvasLocation" x="2372" y="133"/>
         </scene>
         <!--Eaton Center View Controller-->
         <scene sceneID="KMS-tV-WyX">
@@ -351,20 +352,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RwF-t5-TG7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1890" y="-622"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="Jbx-JD-PqZ">
-            <objects>
-                <viewController id="cKr-95-dih" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="6bU-4p-dw4">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gaZ-Je-op1" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
+            <point key="canvasLocation" x="2366" y="-534"/>
         </scene>
         <!--Eaton User Tracking View Controller - Eaton Center Trial Users-->
         <scene sceneID="Qpj-cA-gVk">
@@ -384,6 +372,9 @@
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
+                                <connections>
+                                    <outlet property="delegate" destination="PHN-B4-iyt" id="J4X-8h-lQt"/>
+                                </connections>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -391,12 +382,63 @@
                     <navigationItem key="navigationItem" title="Eaton Center Trial Users" id="adH-Fr-MLQ"/>
                     <connections>
                         <outlet property="eatonMapView" destination="UGE-DJ-Dwk" id="joT-BT-GeH"/>
-                        <outlet property="scrollView" destination="kCY-wi-Hby" id="cVk-Pz-7zm"/>
+                        <outlet property="scrollView" destination="kCY-wi-Hby" id="5it-nr-oCV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nbf-aq-y1F" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2123" y="948"/>
+            <point key="canvasLocation" x="2372" y="816"/>
+        </scene>
+        <!--Sick Kids View Controller - Sick Kids Map-->
+        <scene sceneID="Aev-2E-GPd">
+            <objects>
+                <viewController id="wAe-8p-vlt" customClass="E20SickKidsViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="aB3-DM-FU7">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" id="JVk-d6-dsU">
+                                <rect key="frame" x="80" y="142" width="160" height="284"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="75D-Cd-P8n" customClass="E20SickKidsScrollView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="450"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" id="qhT-SW-OMi" customClass="E20SickKidsMapView">
+                                        <rect key="frame" x="0.0" y="0.0" width="2000" height="2000"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Sick Kids Map" id="ncp-Qn-B3V"/>
+                    <connections>
+                        <outlet property="scrollView" destination="75D-Cd-P8n" id="bJ1-bV-aAb"/>
+                        <outlet property="skMapView" destination="qhT-SW-OMi" id="57L-fr-7Ki"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dcq-oG-ilf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1749" y="-941"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="gqa-yh-4cG">
+            <objects>
+                <viewController id="0LW-Cg-3GL" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CbZ-T4-ziy">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="708-R0-0e3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

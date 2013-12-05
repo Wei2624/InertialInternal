@@ -17,6 +17,8 @@
 @property double weight;
 @property int updateOrder;
 @property int numTimesUpdated;
+@property int currArea;
+
 
 -(id) initWithPosition: (E20Matrix*) position withOrientation: (E20Matrix*) orientation currentArea: (NSString*) area;
 

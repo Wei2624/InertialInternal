@@ -1,25 +1,23 @@
 //
-//  E20EatonCenterViewController.m
+//  E20SickKidsViewController.m
 //  InertialInternal
 //
-//  Created by E-Twenty Janahan on 11/30/13.
+//  Created by E-Twenty Janahan on 12/5/13.
 //  Copyright (c) 2013 E-Twenty Dev. All rights reserved.
 //
 
-#import "E20EatonCenterViewController.h"
+#import "E20SickKidsViewController.h"
 
-@interface E20EatonCenterViewController ()
+@interface E20SickKidsViewController ()
 
 @end
 
-@implementation E20EatonCenterViewController
+@implementation E20SickKidsViewController
 # define filterLength 101
 # define samplingFreq 101
 # define numSamplesStored 101
-
-
-@synthesize eatonMapView;
-@synthesize sensorInfoData;
+@synthesize scrollView;
+@synthesize skMapView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -45,10 +43,10 @@
                         ^{
                             /*PPPLLLLEEEEEAAASEEE break this block down into subfunctions*/
                             NSArray *filterParamGyro = [NSArray arrayWithObjects:
-                                                    [NSNumber numberWithInteger:filterLength],
-                                                    [NSNumber numberWithDouble:0.466222],
-                                                    [NSNumber numberWithDouble:0.684419],
-                                                    [NSNumber numberWithDouble:samplingFreq],nil];
+                                                        [NSNumber numberWithInteger:filterLength],
+                                                        [NSNumber numberWithDouble:0.466222],
+                                                        [NSNumber numberWithDouble:0.684419],
+                                                        [NSNumber numberWithDouble:samplingFreq],nil];
                             NSArray *whittParam0 = [NSArray arrayWithObjects:
                                                     [NSNumber numberWithInteger:filterLength],
                                                     [NSNumber numberWithDouble:302],
@@ -69,10 +67,10 @@
                                                     [NSNumber numberWithInt:344.7508],nil];
                             
                             NSArray *filterParamSteps = [NSArray arrayWithObjects:
-                                                    [NSNumber numberWithInteger:filterLength],
-                                                    [NSNumber numberWithDouble:1],
-                                                    [NSNumber numberWithDouble:1.1],
-                                                    [NSNumber numberWithDouble:samplingFreq],nil];
+                                                         [NSNumber numberWithInteger:filterLength],
+                                                         [NSNumber numberWithDouble:1],
+                                                         [NSNumber numberWithDouble:1.1],
+                                                         [NSNumber numberWithDouble:samplingFreq],nil];
                             
                             NSArray *stepsParam0 = [NSArray arrayWithObjects:
                                                     [NSNumber numberWithInteger:40],
@@ -100,7 +98,7 @@
                                                     [NSNumber numberWithDouble:0.023],
                                                     [NSNumber numberWithDouble:2.532e-7],
                                                     [NSNumber numberWithDouble:6e-6],nil];
-
+                            
                             static NSTimeInterval prevTime; //holds the timestamp of the last sensor interrupt
                             static dispatch_once_t once;
                             dispatch_once(&once, ^{
@@ -124,7 +122,7 @@
                                     [eatonMapView.keySensorInfo removeObjectAtIndex:0];
                                 }
                             }
-
+                            
                             
                             if([eatonMapView.gravHistory count] > filterLength){
                                 [eatonMapView.gravHistory removeObjectAtIndex:0];
@@ -173,7 +171,7 @@
                             prevTime = currTime;
                             
                         }
-                            );
+                        );
      }
      ];
     
@@ -271,47 +269,69 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.scrollView setScrollEnabled:YES];
+    [super viewDidLoad];
+	[self.scrollView setScrollEnabled:YES];
     [self.scrollView setContentSize:(CGSizeMake(800, 1300))];
+	scrollView.delegate = self;
+    
+    scrollView.minimumZoomScale = 0.5;
+	scrollView.maximumZoomScale = 2.0;
+	[scrollView setZoomScale:1];
     [self loadData];
-    self.eatonMapView.canDraw = YES;
-    [eatonMapView setNeedsDisplay];
-    eatonMapView.users = [[NSMutableArray alloc] init];
-    [eatonMapView initUsersCenteredAtX:420 andY:400 andOrientationAngle:90];
-    [eatonMapView setGravHistory:[[NSMutableArray alloc] init]];
-    [eatonMapView setGyroHistory:[[NSMutableArray alloc] init]];
-    [eatonMapView setAccelHistory:[[NSMutableArray alloc] init]];
-    [eatonMapView setGyroPlanarizedHistory:[[NSMutableArray alloc] init]];
-    [eatonMapView setGyroWhitt:[[NSMutableArray alloc] init]];
-    [eatonMapView setPositionHistory:[[NSMutableArray alloc] init]];
-    [eatonMapView setKeySensorInfo:[[NSMutableArray alloc] init]];
+    skMapView.canDraw=YES;
+    skMapView.users = [[NSMutableArray alloc] init];
+    [skMapView initUsersCenteredAtX:9*4 andY:99*4 andOrientationAngle:0];
+    [skMapView setGravHistory:[[NSMutableArray alloc] init]];
+    [skMapView setGyroHistory:[[NSMutableArray alloc] init]];
+    [skMapView setAccelHistory:[[NSMutableArray alloc] init]];
+    [skMapView setGyroPlanarizedHistory:[[NSMutableArray alloc] init]];
+    [skMapView setGyroWhitt:[[NSMutableArray alloc] init]];
+    [skMapView setPositionHistory:[[NSMutableArray alloc] init]];
+    [skMapView setKeySensorInfo:[[NSMutableArray alloc] init]];
     [self setSensorInfoData:[[E20SensorInfo alloc] init]];
-    [self startMotionTracking];
-    _iterationUpdatePosition = 0;
-    _recordUsersData = NO;
-    if(_recordUsersData){
-        eatonMapView.csvOutput = [NSMutableString stringWithString:@"User1x,User1y,User1weight,User2x,User2y,User2weight,User3x,User3y,User3weight,User4x,User4y,User4weight,User5x,User5y,User5weight,User6x,User6y,User6weight,User7x,User7y,User7weight,User8x,User8y,User8weight,User9x,User9y,User9weight,User10x,User10y,User10weight,User11x,User11y,User11weight,User12x,User12y,User12weight,User13x,User13y,User13weight,User14x,User14y,User14weight,User15x,User15y,User15weight"];
-    }
-
-	// Do any additional setup after loading the view.
+    [skMapView setNeedsDisplay];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
+    skMapView.frame = [self centeredFrameForScrollView:self.scrollView andUIView:skMapView];
+}
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+	return skMapView;
+}
+
+- (CGRect)centeredFrameForScrollView:(UIScrollView *)scroll andUIView:(UIView *)rView {
+	CGSize boundsSize = scroll.bounds.size;
+    CGRect frameToCenter = rView.frame;
+    
+    // center horizontally
+    if (frameToCenter.size.width < boundsSize.width) {
+        frameToCenter.origin.x = (boundsSize.width - frameToCenter.size.width) / 2;
+    }
+    else {
+        frameToCenter.origin.x = 0;
+    }
+    
+    // center vertically
+    if (frameToCenter.size.height < boundsSize.height) {
+        frameToCenter.origin.y = (boundsSize.height - frameToCenter.size.height) / 2;
+    }
+    else {
+        frameToCenter.origin.y = 0;
+    }
+	
+	return frameToCenter;
 }
 
 -(void) loadData{
-    eatonMapView.eatonAreas = [[NSMutableDictionary alloc]init];
-    NSMutableArray * newMapLine;
+    skMapView.skAreas = [[NSMutableArray alloc]init];
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,  NSUserDomainMask, YES);
     NSString *documentsDirectoryPath = [paths objectAtIndex:0];
     NSString *filePath= nil;
-    filePath = [documentsDirectoryPath  stringByAppendingPathComponent:@"mainCorridor.csv"];
+    filePath = [documentsDirectoryPath  stringByAppendingPathComponent:@"skAreas.csv"];
     
-
+    
     NSError *error;
     NSString *stringFromFileAtPath = [[NSString alloc]
                                       initWithContentsOfFile:filePath
@@ -321,110 +341,45 @@
     NSArray  *lines  = [stringFromFileAtPath componentsSeparatedByString:@"\n"];
     NSEnumerator*theEnum = [lines objectEnumerator];
     NSString *theLine;
-    newMapLine = [[NSMutableArray alloc] init];
     while (nil != (theLine = [theEnum nextObject]) )
     {
         if (![theLine isEqualToString:@""] && ![theLine hasPrefix:@"#"])    // ignore empty lines and lines that start with #
         {
             NSArray    *values  = [theLine componentsSeparatedByString:@","];
-            NSString *value = [values objectAtIndex:1];
+            NSString *value = [values objectAtIndex:0];
             double x1 = [value doubleValue];
-            value = [values objectAtIndex:2];
+            value = [values objectAtIndex:1];
             double y1 = [value doubleValue];
-            value = [values objectAtIndex:3];
+            value = [values objectAtIndex:2];
             double x2 = [value doubleValue];
-            value = [values objectAtIndex:4];
+            value = [values objectAtIndex:3];
             double y2 = [value doubleValue];
-            value = [values objectAtIndex:0];
-            int crossable = [value intValue];
-            bool cross;
-            if (crossable) {
-                cross = YES;
-            }
-            else{
-                cross = NO;
-            }
-            E20MapLine* newLine = [[E20MapLine alloc] initWithCartesianX1:x1 Y1:y1 X2:x2 Y2:y2 boolCrossable: cross];
-            [newMapLine addObject:newLine];
-        }
-    }
-    [eatonMapView.eatonAreas setValue:newMapLine forKey:[NSString stringWithFormat:@"area%d.csv",0]];
-    
-    for(int i=1;i<18;i++){
-        filePath = [documentsDirectoryPath  stringByAppendingPathComponent:[NSString stringWithFormat:@"store%d.csv",i]];
-        
-        
-        NSError *error;
-        NSString *stringFromFileAtPath = [[NSString alloc]
-                                          initWithContentsOfFile:filePath
-                                          encoding:NSUTF8StringEncoding
-                                          error:&error];
-        
-        NSArray  *lines  = [stringFromFileAtPath componentsSeparatedByString:@"\n"];
-        NSEnumerator*theEnum = [lines objectEnumerator];
-        NSString *theLine;
-        
-        newMapLine = [[NSMutableArray alloc] init];
-        while (nil != (theLine = [theEnum nextObject]) )
-        {
-            if (![theLine isEqualToString:@""] && ![theLine hasPrefix:@"#"])    // ignore empty lines and lines that start with #
-            {
-                NSArray    *values  = [theLine componentsSeparatedByString:@","];
-                NSString *value = [values objectAtIndex:1];
-                double x1 = [value doubleValue];
-                value = [values objectAtIndex:2];
-                double y1 = [value doubleValue];
-                value = [values objectAtIndex:3];
-                double x2 = [value doubleValue];
-                value = [values objectAtIndex:4];
-                double y2 = [value doubleValue];
-                value = [values objectAtIndex:0];
-                int crossable = [value intValue];
-                bool cross;
-                if (crossable) {
-                    cross = YES;
-                }
-                else{
-                    cross = NO;
-                }
-                E20MapLine* newLine = [[E20MapLine alloc] initWithCartesianX1:x1 Y1:y1 X2:x2 Y2:y2 boolCrossable: cross];
-                [newMapLine addObject:newLine];
-                
-            }
-        
-            [eatonMapView.eatonAreas setValue:newMapLine forKey:[NSString stringWithFormat:@"area%d.csv",i]];
-        }
+            value = [values objectAtIndex:4];
+            double x3 = [value doubleValue];
+            value = [values objectAtIndex:5];
+            double y3 = [value doubleValue];
+            value = [values objectAtIndex:6];
+            double x4 = [value doubleValue];
+            value = [values objectAtIndex:7];
+            double y4 = [value doubleValue];
             
+            
+            
+            E20MapArea *newArea = [[E20MapArea alloc] initWithCoordinatesX1:x1 Y1:y1 X2:x2 Y2:y2 X3:x3 Y3:y3 X4:x4 Y4:y4];
+            
+            [skMapView.skAreas addObject:newArea];
+        }
     }
     
-
+    
 }
 
-- (IBAction)stopMotionTracking:(id)sender {
-    [self.motionManager stopDeviceMotionUpdates];
-    [self.motionManager stopAccelerometerUpdates];
-    [self.motionManager stopGyroUpdates];
-    if (_recordUsersData==YES) {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,  NSUserDomainMask, YES);
-        NSString *documentsDirectoryPath = [paths objectAtIndex:0];
-        NSString *filePath= nil;
 
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
-        
-        
-        filePath = [documentsDirectoryPath  stringByAppendingPathComponent:[NSString stringWithFormat:@"user4.csv"]];
-        NSData* settingsData;
-        settingsData = [eatonMapView.csvOutput dataUsingEncoding: NSASCIIStringEncoding];
-        
-        if ([settingsData writeToFile:filePath atomically:YES])
-            NSLog(@"writeok");
-        
-        
-    }
 
-    
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 @end
