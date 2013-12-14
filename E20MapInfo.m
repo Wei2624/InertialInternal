@@ -10,18 +10,19 @@
 
 @implementation E20MapInfo
 
-+(bool) isPoint: (E202dMapPoint*) position InsideMapArea: (NSMutableArray*) mapArea{
-    E202dMapPoint* refPosition = [[E202dMapPoint alloc] initWithPositionX:0 andPositionY:100];
-    E20MapLine* refLine = [[E20MapLine alloc] initWithStartPosition:refPosition andEndPosition:position];
-    int numIntersects = 0;
-    for(int i=0;i<[mapArea count];i++){
-        if([E20MapInfo doTheyIntersectLine1: refLine andLine2:[mapArea objectAtIndex:i]]){
-            numIntersects++;
-        }
-    }
-    if(numIntersects%2==1){
++(bool) isPoint: (E202dMapPoint*) position InsideMapArea: (E20MapArea*) mapArea{
+    double x = position.position.data[0][0];
+    double y = position.position.data[1][0];
+    E202dMapPoint* p1 = [mapArea.areaPoints objectAtIndex:3];
+    double xmin = p1.position.data[0][0];
+    double ymin = p1.position.data[1][0];
+    p1 = [mapArea.areaPoints objectAtIndex:1];
+    double xmax = p1.position.data[0][0];
+    double ymax = p1.position.data[1][0];
+    if(x>=xmin && x<=xmax && y>=ymin && y<=ymax){
         return YES;
     }
+    
     return NO;
 }
 
@@ -52,44 +53,47 @@
     return NO;
     
 }
-+(E20MapLine*) closestLineOnMap: (NSMutableArray*) mapArea toPointOutsideMap:(E202dMapPoint*) position{
-    double dist=+INFINITY;
-    E20MapLine* closestLine;
-    NSLog(@"%f , %f",position.position.data[0][0],position.position.data[1][0]);
-    for(int i=0;i<[mapArea count];i++){
-        E20MapLine* tempLine = [mapArea objectAtIndex:i];
-        NSLog(@"%f , %f , %f , %f",tempLine.startPosition.position.data[0][0],tempLine.startPosition.position.data[1][0],tempLine.endPosition.position.data[0][0],tempLine.endPosition.position.data[1][0]);
-        double tempDist =[E20MapInfo closestDistanceFromPoint:position ToLine:[mapArea objectAtIndex:i]];
-        if(tempDist<dist){
-            dist = tempDist;
-            closestLine = [mapArea objectAtIndex:i];
-        }
++(E20MapLine*) closestLineOnMap: (E20MapArea*) mapArea toPointOutsideMap:(E202dMapPoint*) position{
+
+    double x = position.position.data[0][0];
+    double y = position.position.data[1][0];
+    
+    E202dMapPoint* p1 = [mapArea.areaPoints objectAtIndex:3];
+    double xmin = p1.position.data[0][0];
+    double ymin = p1.position.data[1][0];
+    p1 = [mapArea.areaPoints objectAtIndex:1];
+    double xmax = p1.position.data[0][0];
+    double ymax = p1.position.data[1][0];
+    if(x<=xmin){
+        return [mapArea.areaLines objectAtIndex:0];
     }
-    return closestLine;
+    else if (x>=xmax){
+        return [mapArea.areaLines objectAtIndex:2];
+    }
+    else if (y>=ymax){
+        return [mapArea.areaLines objectAtIndex:1];
+    }
+    else{
+        return [mapArea.areaLines objectAtIndex:3];
+    }
 }
-+(double) closestDistanceToMap: (NSMutableArray*) mapArea toPointOutsideMap:(E202dMapPoint*) position{
+
++(double) closestDistanceToMap: (E20MapArea*) mapArea toPointOutsideMap:(E202dMapPoint*) position{
     double dist=+INFINITY;
 
-    for(int i=0;i<[mapArea count];i++){
-        double tempDist =[E20MapInfo closestDistanceFromPoint:position ToLine:[mapArea objectAtIndex:i]];
-        if(tempDist<dist){
-            dist = tempDist;
-            
-        }
-    }
+    E20MapLine* tempLine = [E20MapInfo closestLineOnMap:mapArea toPointOutsideMap:position];
+    dist =[E20MapInfo closestDistanceFromPoint:position ToLine:tempLine];
+    
     return dist;
 }
 
-+(E202dMapPoint*) closestPointOnMap: (NSMutableArray*) mapArea toPointOutsideMap:(E202dMapPoint*) position{
-    double dist=+INFINITY;
++(E202dMapPoint*) closestPointOnMap: (E20MapArea*) mapArea toPointOutsideMap:(E202dMapPoint*) position{
+
     E202dMapPoint* closestPoint;
-    for(int i=0;i<[mapArea count];i++){
-        double tempDist =[E20MapInfo closestDistanceFromPoint:position ToLine:[mapArea objectAtIndex:i]];
-        if(tempDist<dist){
-            dist = tempDist;
-            closestPoint = [E20MapInfo closestPointOnLine:[mapArea objectAtIndex:i] toPoint:position];
-        }
-    }
+
+    E20MapLine* tempLine = [E20MapInfo closestLineOnMap:mapArea toPointOutsideMap:position];
+    closestPoint = [E20MapInfo closestPointOnLine:tempLine toPoint:position];
+    
     return closestPoint;
 
 }
@@ -142,15 +146,25 @@
     return vec1;
 }
 
-+(NSString*) returnKeyFromUserPositionX: (double) x PositionY:(double) y mapDictionay: (NSMutableDictionary*) mapDict{
-    for(id key in mapDict) {
-        NSMutableArray* area = [mapDict objectForKey:key];
++(int) returnAreaFromUserPositionX: (double) x PositionY:(double) y mapAreas: (NSMutableArray*) mapAreas{
+    for(int i=0;i<[mapAreas count];i++) {
+        E20MapArea* area = [mapAreas objectAtIndex:i];
         E202dMapPoint* mapPoint = [[E202dMapPoint alloc] initWithPositionX:x andPositionY:y];
         if([E20MapInfo isPoint:mapPoint InsideMapArea:area]){
-            return key;
+            return i;
         }
     }
-    return nil;
+    return -1; //error no map found, return -1
+}
+
++(int) returnKeyFromUserPosition: (E202dMapPoint*) position  mapAreas: (NSMutableArray*) mapAreas{
+    for(int i=0;i<[mapAreas count];i++) {
+        E20MapArea* area = [mapAreas objectAtIndex:i];
+        if([E20MapInfo isPoint:position InsideMapArea:area]){
+            return i;
+        }
+    }
+    return -1; //error no map found, return -1
 }
 
 @end

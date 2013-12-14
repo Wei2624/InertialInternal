@@ -18,6 +18,7 @@
 # define numSamplesStored 101
 @synthesize scrollView;
 @synthesize skMapView;
+@synthesize sensorInfoData;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -51,7 +52,7 @@
                                                     [NSNumber numberWithInteger:filterLength],
                                                     [NSNumber numberWithDouble:302],
                                                     [NSNumber numberWithInt:63],
-                                                    [NSNumber numberWithDouble:0.007914],
+                                                    [NSNumber numberWithDouble:0.01],
                                                     [NSNumber numberWithInt:315],nil];
                             NSArray *whittParam1 = [NSArray arrayWithObjects:
                                                     [NSNumber numberWithInteger:filterLength],
@@ -112,28 +113,28 @@
                             dataPoint.z = data.gravity.z;
                             dataPoint.timeStamp = currTime-prevTime;
                             NSLog(@"Time: %f", currTime-prevTime);
-                            [eatonMapView.gravHistory addObject:dataPoint];
-                            if([eatonMapView.accelHistory count]>1){
+                            [skMapView.gravHistory addObject:dataPoint];
+                            if([skMapView.accelHistory count]>1){
                                 //planarize the accel vector in the direction of grav
                                 //using same function that planarizes gyro omega parallel to grav
-                                E201dDataPoint* keySensorPoint = [E20SensorInfo getAccelPlanarizedForGrav:eatonMapView.gravHistory ForAccel:eatonMapView.accelHistory];
-                                [eatonMapView.keySensorInfo addObject:keySensorPoint];
-                                if([eatonMapView.keySensorInfo count]>filterLength){
-                                    [eatonMapView.keySensorInfo removeObjectAtIndex:0];
+                                E201dDataPoint* keySensorPoint = [E20SensorInfo getAccelPlanarizedForGrav:skMapView.gravHistory ForAccel:skMapView.accelHistory];
+                                [skMapView.keySensorInfo addObject:keySensorPoint];
+                                if([skMapView.keySensorInfo count]>filterLength){
+                                    [skMapView.keySensorInfo removeObjectAtIndex:0];
                                 }
                             }
                             
                             
-                            if([eatonMapView.gravHistory count] > filterLength){
-                                [eatonMapView.gravHistory removeObjectAtIndex:0];
-                                if([eatonMapView.gyroHistory count] >= filterLength && [eatonMapView.accelHistory count] >= filterLength && [eatonMapView.gyroPlanarizedHistory count] >=filterLength && [eatonMapView.keySensorInfo count]>= filterLength){
+                            if([skMapView.gravHistory count] > filterLength){
+                                [skMapView.gravHistory removeObjectAtIndex:0];
+                                if([skMapView.gyroHistory count] >= filterLength && [skMapView.accelHistory count] >= filterLength && [skMapView.gyroPlanarizedHistory count] >=filterLength && [skMapView.keySensorInfo count]>= filterLength){
                                     //check if it's ok to start filtering signals, as I'd like all of them to be synchronized with enough
                                     //data points
-                                    [E20SensorInfo set3dRawAndFilteredValueWithInput:eatonMapView.gravHistory withFilterParam:filterParamGyro forRawData:sensorInfoData.gravRaw forFilteredData:sensorInfoData.gravFiltered];
-                                    [E20SensorInfo set3dRawAndFilteredValueWithInput:eatonMapView.gyroHistory withFilterParam:filterParamGyro forRawData:sensorInfoData.gyroRaw forFilteredData:sensorInfoData.gyroFiltered];
-                                    [E20SensorInfo set3dRawAndFilteredValueWithInput:eatonMapView.accelHistory withFilterParam:filterParamGyro forRawData:sensorInfoData.accelRaw forFilteredData:sensorInfoData.accelFiltered];
-                                    [E20SensorInfo set1dRawAndFilteredValueWithInput:eatonMapView.gyroPlanarizedHistory withFilterParam:filterParamGyro forRawData:sensorInfoData.gyroPlanarizedRaw forFilteredData:sensorInfoData.gyroPlanarizedFiltered];
-                                    [E20SensorInfo set1dRawAndFilteredValueWithInput:eatonMapView.keySensorInfo withFilterParam:filterParamSteps forRawData:sensorInfoData.accelKeySensorRaw forFilteredData:sensorInfoData.accelKeySensorFiltered];
+                                    [E20SensorInfo set3dRawAndFilteredValueWithInput:skMapView.gravHistory withFilterParam:filterParamGyro forRawData:sensorInfoData.gravRaw forFilteredData:sensorInfoData.gravFiltered];
+                                    [E20SensorInfo set3dRawAndFilteredValueWithInput:skMapView.gyroHistory withFilterParam:filterParamGyro forRawData:sensorInfoData.gyroRaw forFilteredData:sensorInfoData.gyroFiltered];
+                                    [E20SensorInfo set3dRawAndFilteredValueWithInput:skMapView.accelHistory withFilterParam:filterParamGyro forRawData:sensorInfoData.accelRaw forFilteredData:sensorInfoData.accelFiltered];
+                                    [E20SensorInfo set1dRawAndFilteredValueWithInput:skMapView.gyroPlanarizedHistory withFilterParam:filterParamGyro forRawData:sensorInfoData.gyroPlanarizedRaw forFilteredData:sensorInfoData.gyroPlanarizedFiltered];
+                                    [E20SensorInfo set1dRawAndFilteredValueWithInput:skMapView.keySensorInfo withFilterParam:filterParamSteps forRawData:sensorInfoData.accelKeySensorRaw forFilteredData:sensorInfoData.accelKeySensorFiltered];
                                     if([sensorInfoData.gyroPlanarizedFiltered count]>= maxSensorHistoryStored){
                                         
                                         E201dDataPoint* gyroPlanarizedRawPoint = [sensorInfoData.gyroPlanarizedRaw objectAtIndex:0];
@@ -155,14 +156,14 @@
                                             step = [E20SensorInfo updateStepsDetectedUsingKeyAccelRaw:sensorInfoData.accelKeySensorRaw keyAccelFiltered:sensorInfoData.accelKeySensorFiltered rawAcceleration:sensorInfoData.accelRaw andStepParam:stepsParam2];
                                         }
                                         
-                                        [eatonMapView updateAllUsersOrientationOrientationVectorWithPlanarizedGyroPoint:[sensorInfoData.gyroWhittaker objectAtIndex:[sensorInfoData.gyroWhittaker count]-1]];
-                                        if(step == YES){
-                                            [eatonMapView updatePositionForAllUsers];
-                                            [eatonMapView setNeedsDisplay];
+                                        [skMapView updateAllUsersOrientationOrientationVectorWithPlanarizedGyroPoint:[sensorInfoData.gyroWhittaker objectAtIndex:[sensorInfoData.gyroWhittaker count]-1]];
+                                        _iterationUpdatePosition++;
+                                        if(_iterationUpdatePosition%100==0){//step == YES
+                                            [skMapView updatePositionForAllUsers];
+                                            [skMapView setNeedsDisplay];
+                                            
                                         }
-                                        if(_recordUsersData){
-                                            [eatonMapView updateRecording];
-                                        }
+                                        
                                     }
                                     
                                 }
@@ -196,20 +197,16 @@
                             dataPoint.y = data.rotationRate.y;
                             dataPoint.z = data.rotationRate.z;
                             dataPoint.timeStamp = currTime-prevTime;
-                            [eatonMapView.gyroHistory addObject:dataPoint];
-                            if([eatonMapView.gyroHistory count] > filterLength){
-                                [eatonMapView.gyroHistory removeObjectAtIndex:0];
+                            [skMapView.gyroHistory addObject:dataPoint];
+                            if([skMapView.gyroHistory count] > filterLength){
+                                [skMapView.gyroHistory removeObjectAtIndex:0];
                             }
-                            if([eatonMapView.gravHistory count] >0){
-                                E201dDataPoint *gyroPlanarizedPoint = [E20SensorInfo getGyroPlanarizedForGrav:eatonMapView.gravHistory ForGyro:eatonMapView.gyroHistory];
-                                [eatonMapView.gyroPlanarizedHistory addObject:gyroPlanarizedPoint];
-                                if([eatonMapView.gyroPlanarizedHistory count]>filterLength){
-                                    [eatonMapView.gyroPlanarizedHistory removeObjectAtIndex:0];
+                            if([skMapView.gravHistory count] >0){
+                                E201dDataPoint *gyroPlanarizedPoint = [E20SensorInfo getGyroPlanarizedForGrav:skMapView.gravHistory ForGyro:skMapView.gyroHistory];
+                                [skMapView.gyroPlanarizedHistory addObject:gyroPlanarizedPoint];
+                                if([skMapView.gyroPlanarizedHistory count]>filterLength){
+                                    [skMapView.gyroPlanarizedHistory removeObjectAtIndex:0];
                                 }
-                            }
-                            _iterationUpdatePosition++;
-                            if(_iterationUpdatePosition%100==0){
-                                
                             }
                             prevTime = currTime;
                         }
@@ -238,9 +235,9 @@
                             dataPoint.y = data.acceleration.y;
                             dataPoint.z = data.acceleration.z;
                             dataPoint.timeStamp = currTime - prevTime;
-                            [eatonMapView.accelHistory addObject:dataPoint];
-                            if([eatonMapView.accelHistory count] > filterLength){
-                                [eatonMapView.accelHistory removeObjectAtIndex:0];
+                            [skMapView.accelHistory addObject:dataPoint];
+                            if([skMapView.accelHistory count] > filterLength){
+                                [skMapView.accelHistory removeObjectAtIndex:0];
                             }
                             prevTime = currTime;
                         }
@@ -270,7 +267,8 @@
 {
     [super viewDidLoad];
     [super viewDidLoad];
-	[self.scrollView setScrollEnabled:YES];
+	skMapView.canDraw=NO;
+    [self.scrollView setScrollEnabled:YES];
     [self.scrollView setContentSize:(CGSizeMake(800, 1300))];
 	scrollView.delegate = self;
     
@@ -278,18 +276,8 @@
 	scrollView.maximumZoomScale = 2.0;
 	[scrollView setZoomScale:1];
     [self loadData];
-    skMapView.canDraw=YES;
-    skMapView.users = [[NSMutableArray alloc] init];
-    [skMapView initUsersCenteredAtX:9*4 andY:99*4 andOrientationAngle:0];
-    [skMapView setGravHistory:[[NSMutableArray alloc] init]];
-    [skMapView setGyroHistory:[[NSMutableArray alloc] init]];
-    [skMapView setAccelHistory:[[NSMutableArray alloc] init]];
-    [skMapView setGyroPlanarizedHistory:[[NSMutableArray alloc] init]];
-    [skMapView setGyroWhitt:[[NSMutableArray alloc] init]];
-    [skMapView setPositionHistory:[[NSMutableArray alloc] init]];
-    [skMapView setKeySensorInfo:[[NSMutableArray alloc] init]];
-    [self setSensorInfoData:[[E20SensorInfo alloc] init]];
-    [skMapView setNeedsDisplay];
+
+    
 }
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView {
@@ -373,6 +361,26 @@
     
     
 }
+
+- (IBAction)startbutton:(id)sender {
+    skMapView.users = [[NSMutableArray alloc] init];
+    skMapView.canDraw=YES;
+    _iterationUpdatePosition = 0;
+    [skMapView initUsersCenteredAtX:10*4 andY:100*4 andOrientationAngle:0];
+    [skMapView setGravHistory:[[NSMutableArray alloc] init]];
+    [skMapView setGyroHistory:[[NSMutableArray alloc] init]];
+    [skMapView setAccelHistory:[[NSMutableArray alloc] init]];
+    [skMapView setGyroPlanarizedHistory:[[NSMutableArray alloc] init]];
+    [skMapView setGyroWhitt:[[NSMutableArray alloc] init]];
+    [skMapView setPositionHistory:[[NSMutableArray alloc] init]];
+    [skMapView setKeySensorInfo:[[NSMutableArray alloc] init]];
+    [self setSensorInfoData:[[E20SensorInfo alloc] init]];
+    [skMapView setNeedsDisplay];
+    [self startMotionTracking];
+
+}
+
+
 
 
 

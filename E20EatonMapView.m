@@ -62,28 +62,28 @@
 }
 
 -(void) initUsersCenteredAtX:(double) x andY: (double) y andOrientationAngle: (double) angle{
-    double xmin = x-20;
-    double ymin = y-20;
-    double angleMin = angle-25;
-    double xrange = 40;
-    double yrange = 40;
-    double angleRange=50;
-    for (int i=0; i<3; i++) {
-        double xtemp = drand48()*xrange+xmin;
-        double ytemp = drand48()*yrange+ymin;
-        NSString* key = [E20MapInfo returnKeyFromUserPositionX:xtemp PositionY:ytemp mapDictionay:eatonAreas];
-        for(int j=0;j<3;j++){
-            double angleTemp = drand48()*angleRange+angleMin;
-            E20UserPosition* newUser = [[E20UserPosition alloc] initWithPositionX:xtemp positionY:ytemp withOrientationAngle:angleTemp currentArea:key];
-            [users addObject:newUser];
-        }
-        for(int j=0;j<1;j++){
-            double angleTemp = drand48()*360;
-            E20UserPosition* newUser = [[E20UserPosition alloc] initWithPositionX:xtemp positionY:ytemp withOrientationAngle:angleTemp currentArea:[NSString stringWithFormat:@"area%d.csv",0]];
-            newUser.weight = 30;
-            [users addObject:newUser];
-        }
-    }
+//    double xmin = x-20;
+//    double ymin = y-20;
+//    double angleMin = angle-25;
+//    double xrange = 40;
+//    double yrange = 40;
+//    double angleRange=50;
+//    for (int i=0; i<3; i++) {
+//        double xtemp = drand48()*xrange+xmin;
+//        double ytemp = drand48()*yrange+ymin;
+//        int* key = [E20MapInfo returnKeyFromUserPositionX:xtemp PositionY:ytemp mapDictionay:eatonAreas];
+//        for(int j=0;j<3;j++){
+//            double angleTemp = drand48()*angleRange+angleMin;
+//            E20UserPosition* newUser = [[E20UserPosition alloc] initWithPositionX:xtemp positionY:ytemp withOrientationAngle:angleTemp currentArea:key];
+//            [users addObject:newUser];
+//        }
+//        for(int j=0;j<1;j++){
+//            double angleTemp = drand48()*360;
+//            E20UserPosition* newUser = [[E20UserPosition alloc] initWithPositionX:xtemp positionY:ytemp withOrientationAngle:angleTemp currentArea:[NSString stringWithFormat:@"area%d.csv",0]];
+//            newUser.weight = 30;
+//            [users addObject:newUser];
+//        }
+//    }
     
 }
 

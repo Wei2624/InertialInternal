@@ -12,22 +12,24 @@
 @interface E20UserPosition : NSObject
 
 @property E202dMapPoint* position;
-@property NSString* currentArea;
 @property E20Matrix* orientation;
+@property NSString* currentArea;
 @property double weight;
 @property int updateOrder;
 @property int numTimesUpdated;
 @property int currArea;
+@property int rebreadthCounter;
+@property bool rebreadthSpawned;
 
 
 -(id) initWithPosition: (E20Matrix*) position withOrientation: (E20Matrix*) orientation currentArea: (NSString*) area;
 
 -(id) initWithPositionX: (double) x positionY: (double) y withOrientationAngle: (double) orientationAngle currentArea: (NSString*) area;
 
--(void) updatePositionForArea: (NSMutableDictionary*) mapAreas;
+-(E20MapLine*) updatePositionForArea: (NSMutableArray*) mapAreas; 
 -(void) updateOrientationVectorWithPlanarizedGyroPoint:(E201dDataPoint *) gyroPlanarizedPoint;
--(NSMutableArray*) returnCurrentAreaInMap: (NSMutableDictionary*) mapAreas;
--(id) returnKeyForMap: (NSMutableArray*) area forMapDict: (NSMutableDictionary*) mapAreas;
+-(E20MapArea*) returnCurrentAreaInMap: (NSMutableArray*) mapAreas;
+-(int) returnIntKeyForMap: (E20MapArea*) area forMapAreas: (NSMutableArray*) mapAreas;
 -(bool) isUserInArea: (NSMutableArray*) mapArea;
 
 @end

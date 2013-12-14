@@ -15,6 +15,7 @@
 
 @property NSMutableArray* areaPoints;
 @property NSMutableArray* areaLines;
+@property E202dMapPoint* centerPoint;
 
 
 

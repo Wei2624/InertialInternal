@@ -33,4 +33,5 @@
 -(double) get2x1VectorMagnitude;
 -(double) get2x1VectorDotProductWith:(E20Matrix*) matrix2;
 -(E20Matrix*) returnSelfCopy;
+-(double) get2x1AngleinDegrees;
 @end

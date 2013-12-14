@@ -16,7 +16,13 @@
 
 @property (weak, nonatomic) IBOutlet E20SickKidsMapView *skMapView;
 @property (weak, nonatomic) IBOutlet E20SickKidsScrollView *scrollView;
+
+@property (retain, nonatomic) E20SensorInfo* sensorInfoData;  //stores all the filtered and manipulated data
+@property int iterationUpdatePosition;
 -(void) loadData;
+- (IBAction)startbutton:(id)sender;
+
+
 
 
 @end

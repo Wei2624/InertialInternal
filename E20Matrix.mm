@@ -201,6 +201,11 @@
     return newMatrix;
 }
 
+-(double) get2x1AngleinDegrees{
+    double x = self.data[0][0];
+    double y = self.data[1][0];
+    return atan2(y, x)*180/M_PI;
+}
 
 
 @end

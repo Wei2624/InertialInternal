@@ -23,6 +23,7 @@
         [self.areaPoints addObject:p1];
         [self.areaPoints addObject:p2];
         [self.areaPoints addObject:p3];
+        self.centerPoint = [[E202dMapPoint alloc] initWithPositionX:(x4*4+x2*4)/2 andPositionY:(-y4*4+-y2*4)/2];
         [self.areaPoints addObject:p4];
         E20MapLine* l1 = [[E20MapLine alloc] initWithStartPosition:p1 andEndPosition:p2];
         E20MapLine* l2 = [[E20MapLine alloc] initWithStartPosition:p2 andEndPosition:p3];
