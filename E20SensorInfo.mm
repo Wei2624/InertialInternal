@@ -182,6 +182,7 @@
     static double zbefore = 0;
     static double zbavg[3] = {0};
     static double zbnum[3] = {0};
+    static double zIncorrect[3] = {0};
     static int spikeLag=0;
     int filterLength = [[whittakerParam objectAtIndex:0] intValue];
     double lambda1 = [[whittakerParam objectAtIndex:1] doubleValue];
@@ -194,8 +195,8 @@
     for(int i =1;i<filterLength;i++){
         //Looks at the average differences in the filtered signal, when average differences high indicates turning
         //avgs looks slightly into the future to see if there is any active/abnormal movement signalling turning
-        E201dDataPoint* gyroPlanarizedFilteredPoint1 = [gyroPlanarizedFiltered objectAtIndex:(i-1+offset)];
-        E201dDataPoint* gyroPlanarizedFilteredPoint2 = [gyroPlanarizedFiltered objectAtIndex:(i+offset)];
+        E201dDataPoint* gyroPlanarizedFilteredPoint1 = [gyroPlanarizedFiltered objectAtIndex:(i-1)];
+        E201dDataPoint* gyroPlanarizedFilteredPoint2 = [gyroPlanarizedFiltered objectAtIndex:(i)];
         avgs += gyroPlanarizedFilteredPoint2.value-gyroPlanarizedFilteredPoint1.value;
     }
     avgs = avgs/filterLength*1e3;
@@ -205,13 +206,25 @@
         int orient = gyroPlanarizedPoint.phoneOrientation;
         z = zbavg[orient];
         //z = zbefore;
+        if(zbnum[orient]<200){
+            z = 0;
+            zIncorrect[orient]++;
+        }
+        else{
+            z = zbavg[orient];
+            if(zIncorrect[orient]>0){
+                double angleCorr = zbavg[orient]*zIncorrect[orient];
+                z = z+angleCorr;
+                zIncorrect[orient]=0;
+            }
+        }
 
         gyroWhittakerPoint.value = gyroPlanarizedPoint.value-z;
         gyroWhittakerPoint.timeStamp = gyroPlanarizedPoint.timeStamp;
         gyroWhittakerPoint.phoneOrientation = gyroPlanarizedPoint.phoneOrientation;
         if(spikeLag<=0){
             spikeLag = spikeLagReset;
-            zbnum[orient] = 0;
+            //zbnum[orient] = 0;
         }
         else{
             spikeLag--;
@@ -236,7 +249,7 @@
     return [E201dDataPoint copyDataPoint:gyroWhittakerPoint];
 }
 
-+(bool) updateStepsDetectedUsingKeyAccelRaw: (NSMutableArray*) accelKeyInfoRaw keyAccelFiltered: (NSMutableArray*) accelKeyInfoFiltered rawAcceleration:(NSMutableArray*) accelRaw andStepParam:(NSArray*) stepParam{
++(double) updateStepsDetectedUsingKeyAccelRaw: (NSMutableArray*) accelKeyInfoRaw keyAccelFiltered: (NSMutableArray*) accelKeyInfoFiltered rawAcceleration:(NSMutableArray*) accelRaw andStepParam:(NSArray*) stepParam{
         /*decides whether step was taken based on purely in plane acceleration information
          stepParam is formatted as such lagtime,max_min,max_max,mag_min,mag_max,var_min,var_max*/
     E201dDataPoint* keyInfoPoint2 = [accelKeyInfoFiltered objectAtIndex:2];
@@ -254,7 +267,10 @@
     double mag_max = [[stepParam objectAtIndex:4] doubleValue];
     double var_min = [[stepParam objectAtIndex:5] doubleValue];
     double var_max = [[stepParam objectAtIndex:6] doubleValue];
-    static NSMutableArray* currStepData = [[NSMutableArray alloc] init];
+    double stepLengthRefMin = [[stepParam objectAtIndex:7] doubleValue];
+    double stepLengthRefMax = [[stepParam objectAtIndex:8] doubleValue];
+    static NSMutableArray* currStepDataFiltered = [[NSMutableArray alloc] init];
+    static NSMutableArray* currStepDataRaw = [[NSMutableArray alloc] init];
 
     int derivNow = copysign(1,diffCurr);
     if(derivNow!=derivBefore){
@@ -262,17 +278,18 @@
     }
     else{
         lagTime--;
-        [E20SensorInfo updateCurrentStepData:currStepData withKeySensor: accelKeyInfoFiltered];
+        [E20SensorInfo updateCurrentStepData:currStepDataFiltered withKeySensor: accelKeyInfoFiltered];
+        [E20SensorInfo updateCurrentStepData:currStepDataRaw withKeySensor: accelKeyInfoRaw];
     }
     derivBefore = derivNow;
     bool step=NO;
     if(signChange>=2){
         if(lagTime<1){
-            double avgCurrentStepData = [E20SensorInfo avgCurrentStepData:currStepData];
-            currStepData = [E20SensorInfo unbiasCurrentStepData:currStepData withAvg:avgCurrentStepData]; //removes dc offset
-            double magCurrentStepData = [E20SensorInfo magnitudeCurrentStepData:currStepData];
-            double varCurrentStepData = [E20SensorInfo varianceCurrentStepData:currStepData withAvg:0]; //unbiased avg is zero
-            double maxCurrentStepData = [E20SensorInfo maxCurrentStepData:currStepData];
+            double avgCurrentStepData = [E20SensorInfo avgCurrentStepData:currStepDataFiltered];
+            currStepDataFiltered = [E20SensorInfo unbiasCurrentStepData:currStepDataFiltered withAvg:avgCurrentStepData]; //removes dc offset
+            double magCurrentStepData = [E20SensorInfo magnitudeCurrentStepData:currStepDataFiltered];
+            double varCurrentStepData = [E20SensorInfo varianceCurrentStepData:currStepDataFiltered withAvg:0]; //unbiased avg is zero
+            double maxCurrentStepData = [E20SensorInfo maxCurrentStepData:currStepDataFiltered];
 
             if(maxCurrentStepData >=max_min && maxCurrentStepData <=max_max){
                     if(magCurrentStepData >=mag_min && magCurrentStepData <=mag_max){
@@ -281,18 +298,42 @@
                             }
                     }
             }
-            currStepData = [[NSMutableArray alloc] init];
+            
+            currStepDataFiltered = [[NSMutableArray alloc] init];
+            
             lagTime = [[stepParam objectAtIndex:0] intValue];//get right value
+            if(step==YES){
+                double maxCurrentRawData = [E20SensorInfo maxCurrentStepData:currStepDataRaw];
+                if(maxCurrentRawData > stepLengthRefMax){
+                    maxCurrentRawData = stepLengthRefMax;
+                }
+                else if (maxCurrentRawData < stepLengthRefMin){
+                    maxCurrentRawData = stepLengthRefMin;
+                }
+                //stepLengthRefMin corresponds to 1.8, stepLengthRefMax t0 2.2
+                double stepLength = (maxCurrentRawData-stepLengthRefMin)/(stepLengthRefMax-stepLengthRefMin)*0.4+1.8;
+                currStepDataRaw =[[NSMutableArray alloc] init];
+                return stepLength;
+            }
+            currStepDataRaw =[[NSMutableArray alloc] init];
+            
         }
         signChange=0;
+        
     }
-    return step;
+    
+    return 0;
 }
 
 +(void) updateCurrentStepData:(NSMutableArray*) currStepData withKeySensor: accelKeyInfoFiltered{
     /*loads currStepData with current filtered sensor readings, uses this to measure variance, magnitude, dot product of step*/
     NSNumber* newStepData = [NSNumber numberWithDouble:[[accelKeyInfoFiltered objectAtIndex:0] getValue]];
     [currStepData addObject:newStepData];
+    if([currStepData count]>200){
+        [currStepData removeObject:0];
+    }
+
+    
     
 }
 
